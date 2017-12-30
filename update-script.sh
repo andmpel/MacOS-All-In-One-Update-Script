@@ -34,5 +34,5 @@ pip2 freeze - local | grep -v ‘^\-e’ | cut -d = -f 1 | xargs pip2 install -U
 echo -e "\n${LG}Updating Python 3.X pips${NC}"
 pip3 freeze - local | grep -v ‘^\-e’ | cut -d = -f 1 | xargs pip3 install -U
 
-echo "\n${LG}Updating Mac OS${NC}"
+echo -e "\n${LG}Updating Mac OS${NC}"
 softwareupdate -i -a
