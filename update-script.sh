@@ -30,6 +30,9 @@ echo -e "\n${LG}Updating gems${NC}"
 gem update
 gem cleanup
 
+echo -e "${LG}Updating Brew Formula's${NC}"
+yarn upgrade --latest
+
 echo -e "\n${LG}Updating Python 2.7.X pips${NC}"
 pip2 freeze - local | grep -v ‘^\-e’ | cut -d = -f 1 | xargs pip2 install -U
 
