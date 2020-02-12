@@ -21,7 +21,7 @@ mas outdated
 mas upgrade
 
 echo -e "\n${LG}Updating Atom${NC}"
-apm-beta upgrade -c false
+apm upgrade -c false
 
 echo -e "\n${LG}Updating npm Packages${NC}"
 npm update -g
