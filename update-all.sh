@@ -70,17 +70,19 @@ update-yarn() {
 
 update-pip2() {
     if ! which pip2 &>/dev/null; then return; fi
+    if ! which python2 &>/dev/null; then return; fi
 
     echo -e "\n${GREEN}Updating Python 2.7.X pips${CLEAR}"
-    python2 -c "import pkg_resources; from subprocess import call; packages = [dist.project_name for dist in pkg_resources.working_set]; call('pip2 install --upgrade ' + ' '.join(packages), shell=True)"
+    python2 -c "import pkg_resources; from subprocess import call; packages = [dist.project_name for dist in pkg_resources.working_set]; call('pip install --upgrade ' + ' '.join(packages), shell=True)"
     #pip2 list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip2 install -U
 }
 
 update-pip3() {
     if ! which pip3 &>/dev/null; then return; fi
+    if ! which python3 &>/dev/null; then return; fi
 
     echo -e "\n${GREEN}Updating Python 3.X pips${CLEAR}"
-    python3 -c "import pkg_resources; from subprocess import call; packages = [dist.project_name for dist in pkg_resources.working_set]; call('pip3 install --upgrade ' + ' '.join(packages), shell=True)"
+    python3 -c "import pkg_resources; from subprocess import call; packages = [dist.project_name for dist in pkg_resources.working_set]; call('pip install --upgrade ' + ' '.join(packages), shell=True)"
     #pip3 list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip3 install -U
 }
 
@@ -117,3 +119,4 @@ update-all() {
 
 # COMMENT OUT IF SOURCING
 update-all
+
