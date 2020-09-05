@@ -31,8 +31,7 @@ update-brew() {
     brew cleanup -s
 
     echo -e "\n${GREEN}Updating Brew Casks${CLEAR}"
-    brew cask outdated
-    brew cask upgrade
+    brew cu -ay --no-brew-update
     brew cleanup -s
 
     echo -e "\n${GREEN}Brew Diagnostics${CLEAR}"
@@ -73,14 +72,16 @@ update-pip2() {
     if ! which pip2 &>/dev/null; then return; fi
 
     echo -e "\n${GREEN}Updating Python 2.7.X pips${CLEAR}"
-    pip2 freeze - local | grep -v ‘^\-e’ | cut -d = -f 1 | xargs pip2 install -U
+    python2 -c "import pkg_resources; from subprocess import call; packages = [dist.project_name for dist in pkg_resources.working_set]; call('pip2 install --upgrade ' + ' '.join(packages), shell=True)"
+    #pip2 list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip2 install -U
 }
 
 update-pip3() {
     if ! which pip3 &>/dev/null; then return; fi
 
     echo -e "\n${GREEN}Updating Python 3.X pips${CLEAR}"
-    pip3 freeze - local | grep -v ‘^\-e’ | cut -d = -f 1 | xargs pip3 install -U
+    python3 -c "import pkg_resources; from subprocess import call; packages = [dist.project_name for dist in pkg_resources.working_set]; call('pip3 install --upgrade ' + ' '.join(packages), shell=True)"
+    #pip3 list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip3 install -U
 }
 
 update-app_store() {
@@ -96,6 +97,11 @@ update-macos() {
     softwareupdate -i -a
 }
 
+update-office() {
+    echo -e "\n${GREEN}Updating MS-Office${CLEAR}"
+    /Library/Application\ Support/Microsoft/MAU2.0/Microsoft\ AutoUpdate.app/Contents/MacOS/msupdate --install
+}
+
 update-all() {
     update-brew
     update-atom
@@ -105,9 +111,9 @@ update-all() {
     update-pip2
     update-pip3
     update-app_store
+    update-office
     update-macos
 }
 
 # COMMENT OUT IF SOURCING
 update-all
-
