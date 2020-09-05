@@ -46,5 +46,6 @@ Currently including:
 - 🧶 Yarn (`yarn`)
 - 🐍 Python 2.7 and 3 (`pip`)
 - 🔵 Applications in the Appstore (`mas`)
+- 📚 Microsoft Office (`msupdate`)
 - 🖥 MacOS Operating System Updates/Patches (`softwareupdate`)
 
