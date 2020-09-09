@@ -31,7 +31,8 @@ update-brew() {
     brew cleanup -s
 
     echo -e "\n${GREEN}Updating Brew Casks${CLEAR}"
-    brew cu -ay --no-brew-update
+    brew outdated --cask
+    brew upgrade --cask
     brew cleanup -s
 
     echo -e "\n${GREEN}Brew Diagnostics${CLEAR}"
