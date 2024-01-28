@@ -40,7 +40,6 @@ and now you can call the script any time :)
 Currently including:
 
 - 🍺 Homebrew formula's and casks (`brew`)
-- ⚛️ Atom (`apm`)
 - 📦 Node Package Manager (`npm`)
 - 💎 RubyGems (`gem`)
 - 🧶 Yarn (`yarn`)
