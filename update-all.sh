@@ -40,13 +40,6 @@ update-brew() {
     brew missing
 }
 
-update-atom() {
-    if ! which apm &>/dev/null; then return; fi
-
-    echo -e "\n${GREEN}Updating Atom${CLEAR}"
-    apm upgrade -c false
-}
-
 update-npm() {
     if ! which npm &>/dev/null; then return; fi
 
