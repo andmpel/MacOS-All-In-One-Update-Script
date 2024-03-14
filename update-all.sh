@@ -19,6 +19,7 @@
 #  and now you can call the script any time :)
 
 # Text Color Variables
+RED='\033[31m'   # Red
 GREEN='\033[32m' # Green
 CLEAR='\033[0m'  # Clear color and formatting
 
@@ -67,8 +68,8 @@ update-pip2() {
     if ! which python2 &>/dev/null; then return; fi
 
     echo -e "\n${GREEN}Updating Python 2.7.x pips${CLEAR}"
-    python2 -c "import pkg_resources; from subprocess import call; packages = [dist.project_name for dist in pkg_resources.working_set]; call('pip install --upgrade ' + ' '.join(packages), shell=True)"
-    #pip2 list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip2 install -U
+    # python2 -c "import pkg_resources; from subprocess import call; packages = [dist.project_name for dist in pkg_resources.working_set]; call('pip install --upgrade ' + ' '.join(packages), shell=True)"
+    pip list --outdated --format=columns | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install -U
 }
 
 update-pip3() {
@@ -76,8 +77,8 @@ update-pip3() {
     if ! which python3 &>/dev/null; then return; fi
 
     echo -e "\n${GREEN}Updating Python 3.x pips${CLEAR}"
-    python3 -c "import pkg_resources; from subprocess import call; packages = [dist.project_name for dist in pkg_resources.working_set]; call('pip3 install --upgrade ' + ' '.join(packages), shell=True)"
-    #pip3 list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip3 install -U
+    # python3 -c "import pkg_resources; from subprocess import call; packages = [dist.project_name for dist in pkg_resources.working_set]; call('pip3 install --upgrade ' + ' '.join(packages), shell=True)"
+    pip3 list --outdated --format=columns | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip3 install -U
 }
 
 update-app_store() {
@@ -99,15 +100,20 @@ update-office() {
 }
 
 update-all() {
-    update-brew
-    update-gem
-    update-npm
-    update-yarn
-    update-pip2
-    update-pip3
-    update-app_store
-    update-macos
-    update-office
+    PING_IP=8.8.8.8
+    if ping -q -W 1 -c 1 $PING_IP &> /dev/null; then
+        update-brew
+        update-gem
+        update-npm
+        update-yarn
+        # update-pip2
+        update-pip3
+        update-app_store
+        update-macos
+        # update-office # Enable only if MS-Office is installed in your system.
+    else
+        echo -e "${RED}Internet Disabled!!!${CLEAR}"
+    fi
 }
 
 # COMMENT OUT IF SOURCING
