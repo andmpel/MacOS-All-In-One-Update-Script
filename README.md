@@ -1,4 +1,4 @@
-# All-In-One Mac Update script 🍎
+# All-In-One Mac Update script 🍎🖥️
 
 > Inspired by the article
 [Keeping macOS clean](https://medium.com/@waxzce/keeping-macos-clean-this-is-my-osx-brew-update-cli-command-6c8f12dc1731).
