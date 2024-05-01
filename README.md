@@ -43,7 +43,7 @@ Currently including:
 - 📦 Node Package Manager (`npm`)
 - 💎 RubyGems (`gem`)
 - 🧶 Yarn (`yarn`)
-- 🐍 Python 2.7 and 3 (`pip`)
+- 🐍 Python3.X (`pip`)
 - 🔵 Applications in the Appstore (`mas`)
 - 📚 Microsoft Office (`msupdate`)
 - 🖥 MacOS Operating System Updates/Patches (`softwareupdate`)
