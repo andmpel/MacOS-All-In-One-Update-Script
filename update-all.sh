@@ -63,15 +63,6 @@ update-yarn() {
     yarn upgrade --latest
 }
 
-update-pip2() {
-    if ! which python2 &>/dev/null; then return; fi
-    if ! which pip &>/dev/null; then return; fi
-
-    echo -e "\n${GREEN}Updating Python 2.x pips${CLEAR}"
-    # python2 -c "import pkg_resources; from subprocess import call; packages = [dist.project_name for dist in pkg_resources.working_set]; call('pip install --upgrade ' + ' '.join(packages), shell=True)"
-    pip list --outdated --format=columns | grep -v '^\-e' | cut -d = -f 1 | xargs -n1 pip install -U
-}
-
 update-pip3() {
     if ! which python3 &>/dev/null; then return; fi
     if ! which pip3 &>/dev/null; then return; fi
