@@ -19,8 +19,9 @@
 #  and now you can call the script any time :)
 
 # Text Color Variables
-GREEN='\033[32m' # Green
-CLEAR='\033[0m'  # Clear color and formatting
+readonly RED='\033[31m'   # Red
+readonly GREEN='\033[32m' # Green
+readonly CLEAR='\033[0m'  # Clear color and formatting
 
 update-brew() {
     if ! which brew &>/dev/null; then return; fi
@@ -99,15 +100,20 @@ update-office() {
 }
 
 update-all() {
-    update-brew
-    update-gem
-    update-npm
-    update-yarn
-    update-pip2
-    update-pip3
-    update-app_store
-    update-macos
-    update-office
+    local PING_IP=8.8.8.8
+    if ping -q -W 1 -c 1 $PING_IP &> /dev/null; then
+        update-brew
+        update-gem
+        update-npm
+        update-yarn
+        update-pip2
+        update-pip3
+        update-app_store
+        update-macos
+        update-office # Enable only if MS-Office is installed in your system.
+    else
+        echo -e "${RED}Internet Disabled!!!${CLEAR}"
+    fi
 }
 
 # COMMENT OUT IF SOURCING
