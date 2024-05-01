@@ -63,21 +63,21 @@ update-yarn() {
 }
 
 update-pip2() {
-    if ! which pip2 &>/dev/null; then return; fi
     if ! which python2 &>/dev/null; then return; fi
+    if ! which pip &>/dev/null; then return; fi
 
-    echo -e "\n${GREEN}Updating Python 2.7.x pips${CLEAR}"
-    python2 -c "import pkg_resources; from subprocess import call; packages = [dist.project_name for dist in pkg_resources.working_set]; call('pip install --upgrade ' + ' '.join(packages), shell=True)"
-    #pip2 list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip2 install -U
+    echo -e "\n${GREEN}Updating Python 2.x pips${CLEAR}"
+    # python2 -c "import pkg_resources; from subprocess import call; packages = [dist.project_name for dist in pkg_resources.working_set]; call('pip install --upgrade ' + ' '.join(packages), shell=True)"
+    pip list --outdated --format=columns | grep -v '^\-e' | cut -d = -f 1 | xargs -n1 pip install -U
 }
 
 update-pip3() {
-    if ! which pip3 &>/dev/null; then return; fi
     if ! which python3 &>/dev/null; then return; fi
+    if ! which pip3 &>/dev/null; then return; fi
 
     echo -e "\n${GREEN}Updating Python 3.x pips${CLEAR}"
-    python3 -c "import pkg_resources; from subprocess import call; packages = [dist.project_name for dist in pkg_resources.working_set]; call('pip3 install --upgrade ' + ' '.join(packages), shell=True)"
-    #pip3 list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip3 install -U
+    # python3 -c "import pkg_resources; from subprocess import call; packages = [dist.project_name for dist in pkg_resources.working_set]; call('pip3 install --upgrade ' + ' '.join(packages), shell=True)"
+    pip3 list --outdated --format=columns | grep -v '^\-e' | cut -d = -f 1 | xargs -n1 pip3 install -U
 }
 
 update-app_store() {
@@ -94,8 +94,11 @@ update-macos() {
 }
 
 update-office() {
+    local MS_OFFICE_UPDATE='/Library/Application\ Support/Microsoft/MAU2.0/Microsoft\ AutoUpdate.app/Contents/MacOS/msupdate'
+    if [ ! -f $MS_OFFICE_UPDATE ]; then return; fi
+
     echo -e "\n${GREEN}Updating MS-Office${CLEAR}"
-    /Library/Application\ Support/Microsoft/MAU2.0/Microsoft\ AutoUpdate.app/Contents/MacOS/msupdate --install
+    $MS_OFFICE_UPDATE --install
 }
 
 update-all() {
