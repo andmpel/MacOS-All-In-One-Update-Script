@@ -24,60 +24,88 @@ readonly GREEN='\033[32m' # Green
 readonly CLEAR='\033[0m'  # Clear color and formatting
 
 update-brew() {
-    if ! which brew &>/dev/null; then return; fi
-
     echo -e "${GREEN}Updating Brew Formula's${CLEAR}"
-    brew update
-    brew upgrade
-    brew cleanup -s
+
+    if ! command -v brew &>/dev/null; then
+        echo -e "${RED}Brew is not installed.${CLEAR}"
+        return
+    fi
+
+    brew update && brew upgrade && brew cleanup -s
 
     echo -e "\n${GREEN}Updating Brew Casks${CLEAR}"
-    brew outdated --cask
-    brew upgrade --cask
-    brew cleanup -s
+    brew outdated --cask && brew upgrade --cask && brew cleanup -s
 
     echo -e "\n${GREEN}Brew Diagnostics${CLEAR}"
-    brew doctor
-    brew missing
+    brew doctor && brew missing
 }
 
 update-gem() {
-    if ! which gem &>/dev/null; then return; fi
-
     echo -e "\n${GREEN}Updating Gems${CLEAR}"
-    gem update --user-install
-    gem cleanup --user-install
+
+    if ! command -v gem &>/dev/null; then
+        echo -e "${RED}Gem is not installed.${CLEAR}"
+        return
+    fi
+
+    gem update --user-install && gem cleanup --user-install
 }
 
 update-npm() {
-    if ! which npm &>/dev/null; then return; fi
-
     echo -e "\n${GREEN}Updating Npm Packages${CLEAR}"
+
+    if ! command -v npm &>/dev/null; then
+        echo -e "${RED}Npm is not installed.${CLEAR}"
+        return
+    fi
+
     npm update -g
 }
 
 update-yarn() {
-    if ! which yarn &>/dev/null; then return; fi
+    echo -e "\n${GREEN}Updating Yarn Packages${CLEAR}"
 
-    echo -e "${GREEN}Updating Yarn Packages${CLEAR}"
+    if ! command -v yarn &>/dev/null; then
+        echo -e "${RED}Yarn is not installed.${CLEAR}"
+        return
+    fi
+
     yarn upgrade --latest
 }
 
-update-pip3() {
-    if ! which python3 &>/dev/null; then return; fi
-    if ! which pip3 &>/dev/null; then return; fi
+update-pip() {
+    echo -e "\n${GREEN}Updating Python 2.x pips${CLEAR}"
 
+    if ! command -v python2 &>/dev/null || ! command -v pip &>/dev/null; then
+        echo -e "${RED}Python 2 or pip is not installed.${CLEAR}"
+        return
+    fi
+
+    # python2 -c "import pkg_resources; from subprocess import call; packages = [dist.project_name for dist in pkg_resources.working_set]; call('pip install --upgrade ' + ' '.join(packages), shell=True)"
+    pip list --outdated --format=columns | grep -v '^\-e' | cut -d = -f 1 | xargs -n1 pip install -U
+}
+
+update-pip3() {
     echo -e "\n${GREEN}Updating Python 3.x pips${CLEAR}"
+
+    if ! command -v python3 &>/dev/null || ! command -v pip3 &>/dev/null; then
+        echo -e "${RED}Python 3 or pip3 is not installed.${CLEAR}"
+        return
+    fi
+
     # python3 -c "import pkg_resources; from subprocess import call; packages = [dist.project_name for dist in pkg_resources.working_set]; call('pip3 install --upgrade ' + ' '.join(packages), shell=True)"
     pip3 list --outdated --format=columns | grep -v '^\-e' | cut -d = -f 1 | xargs -n1 pip3 install -U
 }
 
 update-app_store() {
-    if ! which mas &>/dev/null; then return; fi
-
     echo -e "\n${GREEN}Updating App Store Applications${CLEAR}"
-    mas outdated
-    mas upgrade
+
+    if ! command -v mas &>/dev/null; then
+        echo -e "${RED}mas is not installed.${CLEAR}"
+        return
+    fi
+
+    mas outdated && mas upgrade
 }
 
 update-macos() {
@@ -86,11 +114,15 @@ update-macos() {
 }
 
 update-office() {
-    local MS_OFFICE_UPDATE='/Library/Application\ Support/Microsoft/MAU2.0/Microsoft\ AutoUpdate.app/Contents/MacOS/msupdate'
-    if [ ! -f $MS_OFFICE_UPDATE ]; then return; fi
-
     echo -e "\n${GREEN}Updating MS-Office${CLEAR}"
-    $MS_OFFICE_UPDATE --install
+
+    local MS_OFFICE_UPDATE='/Library/Application Support/Microsoft/MAU2.0/Microsoft AutoUpdate.app/Contents/MacOS/msupdate'
+    if [ ! -f "$MS_OFFICE_UPDATE" ]; then
+        echo -e "${RED}MS-Office update utility is not installed.${CLEAR}"
+        return
+    fi
+
+    "$MS_OFFICE_UPDATE" --install
 }
 
 update-all() {
@@ -100,11 +132,11 @@ update-all() {
         update-gem
         update-npm
         update-yarn
-        update-pip2
+        update-pip
         update-pip3
         update-app_store
         update-macos
-        update-office # Enable only if MS-Office is installed in your system.
+        update-office
     else
         echo -e "${RED}Internet Disabled!!!${CLEAR}"
     fi
