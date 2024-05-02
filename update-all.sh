@@ -105,7 +105,7 @@ update-app_store() {
         return
     fi
 
-    mas outdated && mas upgrade
+    mas outdated | while read -r app; do mas upgrade "$app"; done
 }
 
 update-macos() {
