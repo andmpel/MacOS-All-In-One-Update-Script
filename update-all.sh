@@ -51,6 +51,18 @@ update-vscode() {
     code --update-extensions
 }
 
+update-office() {
+    echo -e "\n${GREEN}Updating MS-Office${CLEAR}"
+
+    local MS_OFFICE_UPDATE='/Library/Application Support/Microsoft/MAU2.0/Microsoft AutoUpdate.app/Contents/MacOS/msupdate'
+    if [ ! -f "$MS_OFFICE_UPDATE" ]; then
+        echo -e "${RED}MS-Office update utility is not installed.${CLEAR}"
+        return
+    fi
+
+    "$MS_OFFICE_UPDATE" --install
+}
+
 update-gem() {
     echo -e "\n${GREEN}Updating Gems${CLEAR}"
 
@@ -124,22 +136,12 @@ update-macos() {
     softwareupdate -i -a
 }
 
-update-office() {
-    echo -e "\n${GREEN}Updating MS-Office${CLEAR}"
-
-    local MS_OFFICE_UPDATE='/Library/Application Support/Microsoft/MAU2.0/Microsoft AutoUpdate.app/Contents/MacOS/msupdate'
-    if [ ! -f "$MS_OFFICE_UPDATE" ]; then
-        echo -e "${RED}MS-Office update utility is not installed.${CLEAR}"
-        return
-    fi
-
-    "$MS_OFFICE_UPDATE" --install
-}
-
 update-all() {
     local PING_IP=8.8.8.8
     if ping -q -W 1 -c 1 $PING_IP &> /dev/null; then
         update-brew
+        update-office
+        update-vscode
         update-gem
         update-npm
         update-yarn
@@ -147,7 +149,6 @@ update-all() {
         update-pip3
         update-app_store
         update-macos
-        update-office
     else
         echo -e "${RED}Internet Disabled!!!${CLEAR}"
     fi
