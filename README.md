@@ -40,11 +40,12 @@ and now you can call the script any time :)
 Currently including:
 
 - 🍺 Homebrew formula's and casks (`brew`)
+- 📚 Microsoft Office (`msupdate`)
+- 🧑‍💻 VS Code Extensions (`code`)
 - 📦 Node Package Manager (`npm`)
 - 💎 RubyGems (`gem`)
 - 🧶 Yarn (`yarn`)
 - 🐍 Python3 (`pip`)
 - 🔵 Applications in the Appstore (`mas`)
-- 📚 Microsoft Office (`msupdate`)
 - 🖥 MacOS Operating System Updates/Patches (`softwareupdate`)
 
