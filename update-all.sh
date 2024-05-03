@@ -96,14 +96,6 @@ update-yarn() {
     yarn upgrade --latest
 }
 
-update-pip() {
-    echo -e "\n${GREEN}Updating Python 2.x pips${CLEAR}"
-
-    if ! command -v python2 &>/dev/null || ! command -v pip &>/dev/null; then
-        echo -e "${RED}Python 2 or pip is not installed.${CLEAR}"
-        return
-    fi
-
     # python2 -c "import pkg_resources; from subprocess import call; packages = [dist.project_name for dist in pkg_resources.working_set]; call('pip install --upgrade ' + ' '.join(packages), shell=True)"
     pip list --outdated --format=columns | grep -v '^\-e' | cut -d = -f 1 | xargs -n1 pip install -U
 }
@@ -145,7 +137,6 @@ update-all() {
         update-gem
         update-npm
         update-yarn
-        update-pip
         update-pip3
         update-app_store
         update-macos
