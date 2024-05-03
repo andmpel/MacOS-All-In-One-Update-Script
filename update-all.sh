@@ -40,6 +40,17 @@ update-brew() {
     brew doctor && brew missing
 }
 
+update-vscode() {
+    echo -e "\n${GREEN}Updating VSCode Extensions${CLEAR}"
+
+    if ! command -v code &>/dev/null; then
+        echo -e "${RED}VSCode is not installed.${CLEAR}"
+        return
+    fi
+
+    code --update-extensions
+}
+
 update-gem() {
     echo -e "\n${GREEN}Updating Gems${CLEAR}"
 
