@@ -96,10 +96,6 @@ update-yarn() {
     yarn upgrade --latest
 }
 
-    # python2 -c "import pkg_resources; from subprocess import call; packages = [dist.project_name for dist in pkg_resources.working_set]; call('pip install --upgrade ' + ' '.join(packages), shell=True)"
-    pip list --outdated --format=columns | grep -v '^\-e' | cut -d = -f 1 | xargs -n1 pip install -U
-}
-
 update-pip3() {
     echo -e "\n${GREEN}Updating Python 3.x pips${CLEAR}"
 
