@@ -33,9 +33,6 @@ update_brew() {
 
     brew update && brew upgrade && brew cleanup -s
 
-    echo "\n${GREEN}Updating Brew Casks${CLEAR}"
-    brew outdated --cask && brew upgrade --cask && brew cleanup -s
-
     echo "\n${GREEN}Brew Diagnostics${CLEAR}"
     brew doctor && brew missing
 }
