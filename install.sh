@@ -1,5 +1,3 @@
-#!/bin/zsh
-
 ###################################################################################################
 # File: install.sh
 # Description: This script create an alias by downloading a
