@@ -7,7 +7,7 @@ This Zsh script simplifies the process of updating all your macOS software direc
 
 ## Getting Started
 
-### Install Script as Alias
+### Install Script as Alias for Repeat Use
 
 To Download & Execute, Run the following command in your terminal:
 
@@ -31,9 +31,9 @@ If you want to use individual update functions, first comment out the last line 
 source ./update-all.sh
 ```
 
-### Setting Up for Frequent Use
+### Manually Configuring Alias for Repeat Use
 
-For easy access, copy the script to a directory included in your `PATH`. Here’s how:
+For easy access, copy the `update-all.sh` script to a directory included in your `PATH`. Here’s how:
 
 ```sh
 USER_SCRIPTS="${HOME}/.local/bin"  # Modify as needed
