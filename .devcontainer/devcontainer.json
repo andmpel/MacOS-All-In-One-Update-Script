@@ -1,0 +1,41 @@
+{
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "foxundermoon.shell-format",
+                "mads-hartmann.bash-ide-vscode",
+                "streetsidesoftware.code-spell-checker",
+                "usernamehw.errorlens"
+            ],
+            "settings": {
+                "[shellscript]": {
+                    "editor.defaultFormatter": "foxundermoon.shell-format",
+                    "editor.tabSize": 4,
+                    "files.eol": "\n"
+                },
+                "editor.insertSpaces": true,
+                "editor.tabCompletion": "on",
+                "editor.tabSize": 2,
+                "editor.trimAutoWhitespace": true,
+                "extensions.autoUpdate": true,
+                "extensions.ignoreRecommendations": true,
+                "files.autoSave": "afterDelay",
+                "files.eol": "\n",
+                "files.exclude": {
+                    "**/.vscode": true
+                },
+                "search.exclude": {
+                    "**/*.git": true,
+                    "**/*.vscode-server": true
+                },
+                "windows.title": "${folderPath}",
+                "workbench.startupEditor": "none"
+            }
+        }
+    },
+    "image": "mcr.microsoft.com/devcontainers/base:noble",
+    "runArgs": [
+        "--rm",
+        "--name=vsc-${localEnv:USER}-${containerWorkspaceFolderBasename}-${devcontainerId}"
+    ]
+}

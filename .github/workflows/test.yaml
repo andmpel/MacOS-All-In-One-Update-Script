@@ -1,0 +1,27 @@
+name: Test
+on:
+  pull_request:
+    branches: ["*"]
+  push:
+    branches:
+      - master
+jobs:
+  test:
+    name: Test Update Script
+    runs-on: [macos-12, macos-13, macos-latest]
+    defaults:
+      run:
+        shell: zsh
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      - name: Run Test
+        run: |
+          zsh update-all.sh
+          if [ $? -ne 0 ]; then
+            echo "The script exited with an error."
+          exit 1
+          else
+            echo "The script executed successfully."
+            exit 0
+          fi

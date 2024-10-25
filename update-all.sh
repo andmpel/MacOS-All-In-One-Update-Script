@@ -18,6 +18,9 @@
 #
 #  and now you can call the script any time :)
 
+# Exit the script immediately if any command fails
+set -e
+
 # Text Color Variables
 readonly RED='\033[31m'   # Red
 readonly GREEN='\033[32m' # Green
@@ -52,12 +55,12 @@ update_office() {
     echo "\n${GREEN}Updating MS-Office${CLEAR}"
 
     readonly MS_OFFICE_UPDATE='/Library/Application Support/Microsoft/MAU2.0/Microsoft AutoUpdate.app/Contents/MacOS/msupdate'
-    if [ ! -f "$MS_OFFICE_UPDATE" ]; then
+    if [ ! -f "${MS_OFFICE_UPDATE}" ]; then
         echo "${RED}MS-Office update utility is not installed.${CLEAR}"
         return
     fi
 
-    "$MS_OFFICE_UPDATE" --install
+    "${MS_OFFICE_UPDATE}" --install
 }
 
 update_gem() {
@@ -125,7 +128,7 @@ update_app_store() {
         return
     fi
 
-    mas outdated | while read -r app; do mas upgrade "$app"; done
+    mas outdated | while read -r app; do mas upgrade "${app}"; done
 }
 
 update_macos() {
@@ -148,6 +151,7 @@ update_all() {
         update_macos
     else
         echo "${RED}Internet Disabled!!!${CLEAR}"
+        exit 1
     fi
 }
 
