@@ -51,6 +51,7 @@ Currently including:
 - 💎 RubyGems (`gem`)
 - 🧶 Yarn (`yarn`)
 - 🐍 Python3 (`pip`)
+- 🚚 Rust Cargo Crates (`cargo`)
 - 🔵 Applications in the Appstore (`mas`)
 - 🖥 MacOS Operating System Updates/Patches (`softwareupdate`)
 
