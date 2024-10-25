@@ -105,6 +105,18 @@ update_pip3() {
     pip3 list --outdated --format=columns | grep -v '^\-e' | cut -d = -f 1 | xargs -n1 pip3 install -U
 }
 
+update_cargo() {
+    echo "\n${GREEN}Updating Rust Cargo Crates${CLEAR}"
+
+    if ! command -v cargo >/dev/null 2>&1; then
+        echo "${RED}rust/cargo is not installed${CLEAR}"
+        return
+    fi
+
+    cargo install $(cargo install --list | egrep '^[a-z0-9_-]+ v[0-9.]+:$' | cut -f1 -d' ')
+}
+
+
 update_app_store() {
     echo "\n${GREEN}Updating App Store Applications${CLEAR}"
 
@@ -131,6 +143,7 @@ update_all() {
         update_npm
         update_yarn
         update_pip3
+        update_cargo
         update_app_store
         update_macos
     else
