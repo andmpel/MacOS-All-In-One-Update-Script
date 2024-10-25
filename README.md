@@ -1,7 +1,7 @@
 # All-In-One Mac Update script 🍎🖥️
 
 > Inspired by the article
-[Keeping macOS clean](https://medium.com/@waxzce/keeping-macos-clean-this-is-my-osx-brew-update-cli-command-6c8f12dc1731).
+[Keeping macOS clean](https://waxzce.medium.com/keeping-macos-clean-this-is-my-osx-brew-update-cli-command-6c8f12dc1731).
 
 This is a zsh Mac update script that updates all software I could find to be updated via Terminal on macOS.
 
