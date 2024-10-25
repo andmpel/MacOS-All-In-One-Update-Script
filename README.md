@@ -7,7 +7,7 @@ This Zsh script simplifies the process of updating all your macOS software direc
 
 ## Getting Started
 
-### One-Time Execution
+### Install Script as Alias
 
 To Download & Execute, Run the following command in your terminal:
 
