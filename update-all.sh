@@ -1,4 +1,3 @@
-#!/bin/zsh
 # To execute run:
 #
 #    zsh update-all.sh
