@@ -10,6 +10,12 @@ to install [`mas`](https://github.com/mas-cli/mas) to update applications from A
 
 ## Run
 
+Run the following command in your terminal:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/andmpel/MacOS-All-In-One-Update-Script/HEAD/update-all.sh | zsh
+```
+
 To execute just run:
 
 ```sh
