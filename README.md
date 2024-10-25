@@ -30,20 +30,14 @@ source ./update-all.sh
 ```
 
 If you want to use this command often, run the below command
-to download, and add the "update" alias to your bash profile:
+to download the install script:
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/andmpel/MacOS-All-In-One-Update-Script/HEAD/install.sh | zsh
 ```
 
-
-```sh
-USER_SCRIPTS="${HOME}/.local/bin"  # change this
-cp ./update-all.sh $USER_SCRIPTS/update-all
-chmod +x $USER_SCRIPTS/update-all
-```
-
-and now you can call the script any time :)
+Now you can call the script any time by running ```update``` 
+in your zsh shell
 
 
 ## Updates
