@@ -54,6 +54,7 @@ This script currently updates the following:
 - 💎 **RubyGems** (`gem`)
 - 🧶 **Yarn** packages (`yarn`)
 - 🐍 **Python3** packages (`pip`)
+- 🧶 **Rust** packages (`cargo`)
 - 🔵 **App Store** applications (`mas`)
 - 🖥  **MacOS** system updates and patches (`softwareupdate`)
 
