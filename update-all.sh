@@ -1,3 +1,5 @@
+#!/bin/sh
+
 # To execute run:
 #
 #    zsh update-all.sh
@@ -17,33 +19,38 @@
 #
 #  and now you can call the script any time :)
 
-# Exit the script immediately if any command fails
-set -e
-
 # Text Color Variables
 readonly RED='\033[31m'   # Red
 readonly GREEN='\033[32m' # Green
 readonly CLEAR='\033[0m'  # Clear color and formatting
 
+println() {
+    printf "\n${GREEN}%s${CLEAR}\n" "$*" 2>/dev/null
+}
+
+print_err() {
+    printf "\n${RED}%s${CLEAR}\n" "$*" >&2
+}
+
 update_brew() {
-    echo "${GREEN}Updating Brew Formula's${CLEAR}"
+    println "Updating Brew Formula's"
 
     if ! command -v brew >/dev/null 2>&1; then
-        echo "${RED}Brew is not installed.${CLEAR}"
+        print_err "Brew is not installed."
         return
     fi
 
     brew update && brew upgrade && brew cleanup -s
 
-    echo "\n${GREEN}Brew Diagnostics${CLEAR}"
+    println "Brew Diagnostics"
     brew doctor && brew missing
 }
 
 update_vscode() {
-    echo "\n${GREEN}Updating VSCode Extensions${CLEAR}"
+    println "Updating VSCode Extensions"
 
     if ! command -v code >/dev/null 2>&1; then
-        echo "${RED}VSCode is not installed.${CLEAR}"
+        print_err "VSCode is not installed."
         return
     fi
 
@@ -51,11 +58,11 @@ update_vscode() {
 }
 
 update_office() {
-    echo "\n${GREEN}Updating MS-Office${CLEAR}"
+    println "Updating MS-Office"
 
     readonly MS_OFFICE_UPDATE='/Library/Application Support/Microsoft/MAU2.0/Microsoft AutoUpdate.app/Contents/MacOS/msupdate'
     if [ ! -f "${MS_OFFICE_UPDATE}" ]; then
-        echo "${RED}MS-Office update utility is not installed.${CLEAR}"
+        print_err "MS-Office update utility is not installed."
         return
     fi
 
@@ -63,10 +70,10 @@ update_office() {
 }
 
 update_gem() {
-    echo "\n${GREEN}Updating Gems${CLEAR}"
+    println "Updating Gems"
 
     if ! command -v gem >/dev/null 2>&1; then
-        echo "${RED}Gem is not installed.${CLEAR}"
+        print_err "Gem is not installed."
         return
     fi
 
@@ -74,10 +81,10 @@ update_gem() {
 }
 
 update_npm() {
-    echo "\n${GREEN}Updating Npm Packages${CLEAR}"
+    println "Updating Npm Packages"
 
     if ! command -v npm >/dev/null 2>&1; then
-        echo "${RED}Npm is not installed.${CLEAR}"
+        print_err "Npm is not installed."
         return
     fi
 
@@ -85,10 +92,10 @@ update_npm() {
 }
 
 update_yarn() {
-    echo "\n${GREEN}Updating Yarn Packages${CLEAR}"
+    println "Updating Yarn Packages"
 
     if ! command -v yarn >/dev/null 2>&1; then
-        echo "${RED}Yarn is not installed.${CLEAR}"
+        print_err "Yarn is not installed."
         return
     fi
 
@@ -96,34 +103,33 @@ update_yarn() {
 }
 
 update_pip3() {
-    echo "\n${GREEN}Updating Python 3.x pips${CLEAR}"
+    println "Updating Python 3.x pips"
 
     if ! command -v python3 >/dev/null 2>&1 || ! command -v pip3 >/dev/null 2>&1; then
-        echo "${RED}Python 3 or pip3 is not installed.${CLEAR}"
+        print_err "Python3 or pip3 is not installed."
         return
     fi
 
-    # python3 -c "import pkg_resources; from subprocess import call; packages = [dist.project_name for dist in pkg_resources.working_set]; call('pip3 install --upgrade ' + ' '.join(packages), shell=True)"
     pip3 list --outdated --format=columns | grep -v '^\-e' | cut -d = -f 1 | xargs -n1 pip3 install -U
 }
 
 update_cargo() {
-    echo "\n${GREEN}Updating Rust Cargo Crates${CLEAR}"
+    println "Updating Rust Cargo Crates"
 
     if ! command -v cargo >/dev/null 2>&1; then
-        echo "${RED}rust/cargo is not installed${CLEAR}"
+        print_err "Rust/Cargo is not installed."
         return
     fi
 
-    cargo install $(cargo install --list | egrep '^[a-z0-9_-]+ v[0-9.]+:$' | cut -f1 -d' ')
+    cargo install "$(cargo install --list | grep -E '^[a-z0-9_-]+ v[0-9.]+:$' | cut -f1 -d' ')"
 }
 
 
 update_app_store() {
-    echo "\n${GREEN}Updating App Store Applications${CLEAR}"
+    println "Updating App Store Applications"
 
     if ! command -v mas >/dev/null 2>&1; then
-        echo "${RED}mas is not installed.${CLEAR}"
+        print_err "mas is not installed."
         return
     fi
 
@@ -131,7 +137,7 @@ update_app_store() {
 }
 
 update_macos() {
-    echo "\n${GREEN}Updating Mac OS${CLEAR}"
+    println "Updating MacOS"
     softwareupdate -i -a
 }
 
@@ -149,7 +155,7 @@ update_all() {
         update_app_store
         update_macos
     else
-        echo "${RED}Internet Disabled!!!${CLEAR}"
+        print_err "Internet Disabled!!!"
         exit 1
     fi
 }
