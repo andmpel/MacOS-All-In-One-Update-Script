@@ -1,3 +1,5 @@
+#!/bin/sh
+
 ###################################################################################################
 # File: install.sh
 # Description: This script create an alias by downloading a
@@ -88,7 +90,7 @@ Darwin)
 esac
 
 # Check if curl is available
-if ! command -v curl &> /dev/null; then
+if ! command -v curl >/dev/null 2>&1; then
     println >&2 "Error: curl is required but not installed. Please install curl."
     exit 1
 fi
