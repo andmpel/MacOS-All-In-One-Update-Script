@@ -124,7 +124,6 @@ update_cargo() {
     cargo install "$(cargo install --list | grep -E '^[a-z0-9_-]+ v[0-9.]+:$' | cut -f1 -d' ')"
 }
 
-
 update_app_store() {
     println "Updating App Store Applications"
 
@@ -142,22 +141,28 @@ update_macos() {
 }
 
 update_all() {
-    readonly PING_IP=8.8.8.8
-    if ping -q -W 1 -c 1 $PING_IP >/dev/null 2>&1; then
-        update_brew
-        update_office
-        update_vscode
-        update_gem
-        update_npm
-        update_yarn
-        update_pip3
-        update_cargo
-        update_app_store
-        update_macos
-    else
-        print_err "Internet Disabled!!!"
-        exit 1
+    readonly TEST_URL="https://www.google.com"
+    readonly TIMEOUT=2
+
+    # Check if curl is available
+    if command -v curl >/dev/null 2>&1; then
+        # Check if the internet is reachable
+        if ! curl -s --max-time ${TIMEOUT} --head --request GET ${TEST_URL} | grep "200 OK" >/dev/null; then
+            print_err "Internet Disabled!!!"
+            exit 1
+        fi
     fi
+
+    update_brew
+    update_office
+    update_vscode
+    update_gem
+    update_npm
+    update_yarn
+    update_pip3
+    update_cargo
+    update_app_store
+    update_macos
 }
 
 # COMMENT OUT IF SOURCING

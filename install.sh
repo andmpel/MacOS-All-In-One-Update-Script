@@ -16,13 +16,30 @@ set -e
 
 readonly FILE_NAME="update-all.sh"
 readonly UPDATE_SCRIPT_SOURCE_URL="https://raw.githubusercontent.com/andmpel/MacOS-All-In-One-Update-Script/HEAD/${FILE_NAME}"
-readonly UPDATE_ALIAS_SEARCH_STR="alias update='curl -fsSL ${UPDATE_SCRIPT_SOURCE_URL} | zsh'"
+readonly UPDATE_ALIAS_SEARCH_STR="curl -fsSL ${UPDATE_SCRIPT_SOURCE_URL} | ${SHELL}"
 
 UPDATE_ALIAS_SOURCE_STR=$(
     cat <<EOF
 
-# Alias for Update
-${UPDATE_ALIAS_SEARCH_STR}
+# System Update
+update() {
+    # Check if curl is available
+    if ! command -v curl >/dev/null 2>&1; then
+        echo "Error: curl is required but not installed. Please install curl."
+        exit 1
+    fi
+
+    readonly TEST_URL="https://www.google.com"
+    readonly TIMEOUT=1
+
+    # Check if the internet is reachable
+    if ! curl -s --max-time \${TIMEOUT} --head --request GET \${TEST_URL} | grep "200 OK" >/dev/null; then
+        echo "Internet Disabled!!!"
+        exit 1
+    fi
+
+    ${UPDATE_ALIAS_SEARCH_STR}
+}
 EOF
 )
 
@@ -33,7 +50,13 @@ EOF
 # Function: println
 # Description: Prints each argument on a new line, suppressing any error messages.
 println() {
-    command printf %s\\n "$*" 2>/dev/null
+    printf "%s\n" "$*" 2>/dev/null
+}
+
+# Function: print_err
+# Description: Prints each argument as error messages.
+print_err() {
+    printf "%s\n" "$*" >&2
 }
 
 # Function: update_rc
@@ -45,7 +68,7 @@ update_rc() {
         _rc="${HOME}/.zshrc"
         ;;
     *)
-        println >&2 "Error: Unsupported or unrecognized distribution ${ADJUSTED_ID}"
+        print_err "Error: Unsupported or unrecognized distribution ${ADJUSTED_ID}"
         exit 1
         ;;
     esac
@@ -84,14 +107,14 @@ Darwin)
     ADJUSTED_ID="darwin"
     ;;
 *)
-    println >&2 "Error: Unsupported or unrecognized OS distribution: ${OS}"
+    print_err "Error: Unsupported or unrecognized OS distribution: ${OS}"
     exit 1
     ;;
 esac
 
 # Check if curl is available
 if ! command -v curl >/dev/null 2>&1; then
-    println >&2 "Error: curl is required but not installed. Please install curl."
+    print_err "Error: curl is required but not installed. Please install curl."
     exit 1
 fi
 
