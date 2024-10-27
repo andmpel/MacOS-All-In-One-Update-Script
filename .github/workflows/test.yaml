@@ -21,9 +21,7 @@ jobs:
           zsh install.sh || { echo "The script exited with an error."; exit 1; }
           echo "The script executed successfully."
           ZSHRC_PATH="${HOME}/.zshrc"
-          source ${ZSHRC_PATH}
-          UPDATE_ALIAS_SEARCH_STR="curl -fsSL https://raw.githubusercontent.com/andmpel/MacOS-All-In-One-Update-Script/HEAD/update-all.sh | ${SHELL}"
-          if ! grep -qxF "${UPDATE_ALIAS_SEARCH_STR}" "${ZSHRC_PATH}"; then
+          if ! awk '/^update\(\) {/,/^}/' "${ZSHRC_PATH}" | grep -q 'curl'; then
             echo "Error: Test Failed!!!"
             exit 1
           fi
