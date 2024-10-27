@@ -32,11 +32,21 @@ print_err() {
     printf "\n${RED}%s${CLEAR}\n" "$*" >&2
 }
 
+check_command() {
+    command_name="$1"
+
+    if ! command -v "${command_name}" >/dev/null 2>&1; then
+        print_err "${command_name} is not installed."
+        return 1
+    fi
+
+    return 0
+}
+
 update_brew() {
     println "Updating Brew Formula's"
 
-    if ! command -v brew >/dev/null 2>&1; then
-        print_err "Brew is not installed."
+    if ! check_command brew; then
         return
     fi
 
@@ -49,8 +59,7 @@ update_brew() {
 update_vscode() {
     println "Updating VSCode Extensions"
 
-    if ! command -v code >/dev/null 2>&1; then
-        print_err "VSCode is not installed."
+    if ! check_command code; then
         return
     fi
 
@@ -72,8 +81,7 @@ update_office() {
 update_gem() {
     println "Updating Gems"
 
-    if ! command -v gem >/dev/null 2>&1; then
-        print_err "Gem is not installed."
+    if ! check_command gem; then
         return
     fi
 
@@ -83,8 +91,7 @@ update_gem() {
 update_npm() {
     println "Updating Npm Packages"
 
-    if ! command -v npm >/dev/null 2>&1; then
-        print_err "Npm is not installed."
+    if ! check_command npm; then
         return
     fi
 
@@ -94,8 +101,7 @@ update_npm() {
 update_yarn() {
     println "Updating Yarn Packages"
 
-    if ! command -v yarn >/dev/null 2>&1; then
-        print_err "Yarn is not installed."
+    if ! check_command yarn; then
         return
     fi
 
@@ -105,8 +111,7 @@ update_yarn() {
 update_pip3() {
     println "Updating Python 3.x pips"
 
-    if ! command -v python3 >/dev/null 2>&1 || ! command -v pip3 >/dev/null 2>&1; then
-        print_err "Python3 or pip3 is not installed."
+    if ! check_command python3 || ! check_command pip3; then
         return
     fi
 
@@ -116,8 +121,7 @@ update_pip3() {
 update_cargo() {
     println "Updating Rust Cargo Crates"
 
-    if ! command -v cargo >/dev/null 2>&1; then
-        print_err "Rust/Cargo is not installed."
+    if ! check_command cargo; then
         return
     fi
 
@@ -127,8 +131,7 @@ update_cargo() {
 update_app_store() {
     println "Updating App Store Applications"
 
-    if ! command -v mas >/dev/null 2>&1; then
-        print_err "mas is not installed."
+    if ! check_command mas; then
         return
     fi
 
@@ -140,17 +143,37 @@ update_macos() {
     softwareupdate -i -a
 }
 
-update_all() {
-    readonly TEST_URL="https://www.google.com"
-    readonly TIMEOUT=2
+check_internet() {
+    if ! check_command curl; then
+        print_err "Error: curl is required but not installed. Please install curl."
+        return 1
+    fi
 
-    # Check if curl is available
-    if command -v curl >/dev/null 2>&1; then
-        # Check if the internet is reachable
-        if ! curl -s --max-time ${TIMEOUT} --head --request GET ${TEST_URL} | grep "200 OK" >/dev/null; then
-            print_err "Internet Disabled!!!"
-            exit 1
-        fi
+    # Check internet connection by pinging a reliable server
+    TEST_URL="https://www.google.com"
+
+    # Use curl to check the connection
+    TEST_RESP=$(curl -Is --connect-timeout 5 --max-time 10 "${TEST_URL}" 2>/dev/null | head -n 1)
+
+    # Check if response is empty
+    if [ -z "${TEST_RESP}" ]; then
+        print_err "No Internet Connection!!!"
+        return 1
+    fi
+
+    # Check for "200" in the response
+    if ! printf "%s" "${TEST_RESP}" | grep -q "200"; then
+        print_err "Internet is not working!!!"
+        return 1
+    fi
+
+    return 0
+}
+
+update_all() {
+    # Check if internet is available
+    if ! check_internet; then
+        exit 1
     fi
 
     update_brew
