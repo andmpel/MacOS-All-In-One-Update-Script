@@ -16,7 +16,7 @@ set -e
 
 readonly FILE_NAME="update-all.sh"
 readonly UPDATE_SCRIPT_SOURCE_URL="https://raw.githubusercontent.com/andmpel/MacOS-All-In-One-Update-Script/HEAD/${FILE_NAME}"
-readonly UPDATE_ALIAS_SEARCH_STR="curl -fsSL ${UPDATE_SCRIPT_SOURCE_URL} | ${SHELL}"
+readonly UPDATE_ALIAS_SEARCH_STR="curl -fsSL ${UPDATE_SCRIPT_SOURCE_URL} | zsh"
 
 UPDATE_ALIAS_SOURCE_STR=$(
     cat <<EOF
