@@ -17,5 +17,12 @@ jobs:
         uses: actions/checkout@v4
       - name: Run Test
         run: |
-          zsh update-all.sh || { echo "The script exited with an error."; exit 1; }
+          set -x # Enable Execution Logs
+          zsh install.sh || { echo "The script exited with an error."; exit 1; }
           echo "The script executed successfully."
+          ZSHRC_PATH="${HOME}/.zshrc"
+          if ! awk '/^update\(\) {/,/^}/' "${ZSHRC_PATH}" | grep -q 'curl'; then
+            echo "Error: Test Failed!!!"
+            exit 1
+          fi
+          echo "TEST PASSED"

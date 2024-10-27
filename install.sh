@@ -16,13 +16,39 @@ set -e
 
 readonly FILE_NAME="update-all.sh"
 readonly UPDATE_SCRIPT_SOURCE_URL="https://raw.githubusercontent.com/andmpel/MacOS-All-In-One-Update-Script/HEAD/${FILE_NAME}"
-readonly UPDATE_ALIAS_SEARCH_STR="alias update='curl -fsSL ${UPDATE_SCRIPT_SOURCE_URL} | zsh'"
 
-UPDATE_ALIAS_SOURCE_STR=$(
+UPDATE_SOURCE_STR=$(
     cat <<EOF
 
-# Alias for Update
-${UPDATE_ALIAS_SEARCH_STR}
+# System Update
+update() {
+    # Check if curl is available
+    if ! command -v curl >/dev/null 2>&1; then
+        echo "Error: curl is required but not installed. Please install curl." >&2
+        exit 1
+    fi
+
+    # Check internet connection by pinging a reliable server
+    TEST_URL="https://www.google.com"
+
+    # Use curl to check the connection
+    TEST_RESP=\$(curl -Is --connect-timeout 5 --max-time 10 "\${TEST_URL}" 2>/dev/null | head -n 1)
+
+    # Check if response is empty
+    if [ -z "\${TEST_RESP}" ]; then
+        echo "No Internet Connection!!!" >&2
+        exit 1
+    fi
+
+    # Check for "200" in the response
+    if ! printf "%s" "\${TEST_RESP}" | grep -q "200"; then
+        echo "Internet is not working!!!" >&2
+        exit 1
+    fi
+
+    curl -fsSL ${UPDATE_SCRIPT_SOURCE_URL} | zsh
+}
+
 EOF
 )
 
@@ -33,7 +59,13 @@ EOF
 # Function: println
 # Description: Prints each argument on a new line, suppressing any error messages.
 println() {
-    command printf %s\\n "$*" 2>/dev/null
+    printf "%s\n" "$*" 2>/dev/null
+}
+
+# Function: print_err
+# Description: Prints each argument as error messages.
+print_err() {
+    printf "%s\n" "$*" >&2
 }
 
 # Function: update_rc
@@ -45,16 +77,16 @@ update_rc() {
         _rc="${HOME}/.zshrc"
         ;;
     *)
-        println >&2 "Error: Unsupported or unrecognized distribution ${ADJUSTED_ID}"
+        print_err "Error: Unsupported or unrecognized distribution ${ADJUSTED_ID}"
         exit 1
         ;;
     esac
 
     # Check if `alias update='sudo sh ${HOME}/.update.sh'` is already defined, if not then append it
     if [ -f "${_rc}" ]; then
-        if ! grep -qxF "${UPDATE_ALIAS_SEARCH_STR}" "${_rc}"; then
+        if ! awk '/^update\(\) {/,/^}/' "${_rc}" | grep -q 'curl'; then
             println "==> Updating ${_rc} for ${ADJUSTED_ID}..."
-            println "${UPDATE_ALIAS_SOURCE_STR}" >>"${_rc}"
+            println "${UPDATE_SOURCE_STR}" >>"${_rc}"
         fi
     else
         # Notify if the rc file does not exist
@@ -63,7 +95,7 @@ update_rc() {
         # Create the rc file
         touch "${_rc}"
         # Append the sourcing block to the newly created rc file
-        println "${UPDATE_ALIAS_SOURCE_STR}" >>"${_rc}"
+        println "${UPDATE_SOURCE_STR}" >>"${_rc}"
     fi
 
     println ""
@@ -84,16 +116,10 @@ Darwin)
     ADJUSTED_ID="darwin"
     ;;
 *)
-    println >&2 "Error: Unsupported or unrecognized OS distribution: ${OS}"
+    print_err "Error: Unsupported or unrecognized OS distribution: ${OS}"
     exit 1
     ;;
 esac
 
-# Check if curl is available
-if ! command -v curl >/dev/null 2>&1; then
-    println >&2 "Error: curl is required but not installed. Please install curl."
-    exit 1
-fi
-
-# Update the rc (.zshrc) file for `update` alias
+# Update the rc (.zshrc) file for `update`
 update_rc
