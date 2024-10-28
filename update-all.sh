@@ -108,15 +108,7 @@ update_yarn() {
     yarn upgrade --latest
 }
 
-update_pip3() {
-    println "Updating Python 3.x pips"
-
-    if ! check_command python3 || ! check_command pip3; then
-        return
-    fi
-
-    pip3 list --outdated --format=columns | grep -v '^\-e' | cut -d = -f 1 | xargs -n1 pip3 install -U
-}
+# Python pip packages updates have been removed, please create virtual environments per project to manage packages 
 
 update_cargo() {
     println "Updating Rust Cargo Crates"
@@ -182,7 +174,6 @@ update_all() {
     update_gem
     update_npm
     update_yarn
-    update_pip3
     update_cargo
     update_app_store
     update_macos
