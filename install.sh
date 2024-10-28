@@ -25,7 +25,7 @@ update() {
     # Check if curl is available
     if ! command -v curl >/dev/null 2>&1; then
         echo "Error: curl is required but not installed. Please install curl." >&2
-        exit 1
+        return
     fi
 
     # Check internet connection by pinging a reliable server
@@ -37,13 +37,13 @@ update() {
     # Check if response is empty
     if [ -z "\${TEST_RESP}" ]; then
         echo "No Internet Connection!!!" >&2
-        exit 1
+        return
     fi
 
     # Check for "200" in the response
     if ! printf "%s" "\${TEST_RESP}" | grep -q "200"; then
         echo "Internet is not working!!!" >&2
-        exit 1
+        return
     fi
 
     curl -fsSL ${UPDATE_SCRIPT_SOURCE_URL} | zsh

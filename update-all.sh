@@ -115,7 +115,8 @@ update_pip3() {
         return
     fi
 
-    pip3 list --outdated --format=columns | grep -v '^\-e' | cut -d = -f 1 | xargs -n1 pip3 install -U
+    # The `--break-system-packages` option is included to bypass the "externally-managed-environment" error
+    pip3 list --outdated --format=columns | grep -v '^\-e' | cut -d = -f 1 | xargs -n1 pip3 install -U --break-system-packages
 }
 
 update_cargo() {
