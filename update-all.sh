@@ -108,8 +108,6 @@ update_yarn() {
     yarn upgrade --latest
 }
 
-# Python pip packages updates have been removed, please create virtual environments per project to manage packages 
-
 update_cargo() {
     println "Updating Rust Cargo Crates"
 
@@ -117,7 +115,7 @@ update_cargo() {
         return
     fi
 
-    cargo install "$(cargo install --list | grep -E '^[a-z0-9_-]+ v[0-9.]+:$' | cut -f1 -d' ')"
+    cargo install --list | grep -E '^[a-z0-9_-]+ v[0-9.]+:$' | cut -f1 -d' ' | xargs cargo install
 }
 
 update_app_store() {
