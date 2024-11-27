@@ -37,7 +37,7 @@ This script currently updates the following:
 - 📦 **Node Package Manager** packages (`npm`)
 - 💎 **RubyGems** (`gem`)
 - 🧶 **Yarn** packages (`yarn`) 
-- 🧶 **Rust** packages (`cargo`)
+- 🚚 **Rust** packages (`cargo`)
 - 🔵 **App Store** applications (`mas`)
 - 🖥  **MacOS** system updates and patches (`softwareupdate`)
 
