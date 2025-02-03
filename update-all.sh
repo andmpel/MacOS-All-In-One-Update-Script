@@ -66,18 +66,6 @@ update_vscode() {
     code --update-extensions
 }
 
-update_office() {
-    println "Updating MS-Office"
-
-    readonly MS_OFFICE_UPDATE='/Library/Application Support/Microsoft/MAU2.0/Microsoft AutoUpdate.app/Contents/MacOS/msupdate'
-    if [ ! -f "${MS_OFFICE_UPDATE}" ]; then
-        print_err "MS-Office update utility is not installed."
-        return
-    fi
-
-    "${MS_OFFICE_UPDATE}" --install
-}
-
 update_gem() {
     println "Updating Gems"
 
@@ -167,7 +155,6 @@ update_all() {
     fi
 
     update_brew
-    update_office
     update_vscode
     update_gem
     update_npm
