@@ -32,7 +32,6 @@ chmod +x $USER_SCRIPTS/update
 This script currently updates the following:
 
 - 🍺 **Homebrew** formulas and casks (`brew`)
-- 📚 **Microsoft Office** applications (`msupdate`)
 - 🧑‍💻 **VSCode** extensions (`code`)
 - 📦 **Node Package Manager** packages (`npm`)
 - 💎 **RubyGems** (`gem`)
