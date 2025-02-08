@@ -69,8 +69,13 @@ update_vscode() {
 update_gem() {
     println "Updating Gems"
 
-    if ! check_command gem; then
-        return
+    # Get the path of the `gem` command
+    GEM_PATH=$(which gem)
+
+    # Check if the path does not match the expected path
+    if [ "$GEM_PATH" = "/usr/local/opt/ruby/bin/gem" ]; then
+    	print_err "gem is not installed."
+	return
     fi
 
     gem update --user-install && gem cleanup --user-install
