@@ -73,7 +73,7 @@ update_gem() {
     GEM_PATH=$(which gem)
 
     # Check if the path does not match the expected path
-    if [ "$GEM_PATH" = "/usr/local/opt/ruby/bin/gem" ]; then
+    if [ "$GEM_PATH" = "/usr/bin/gem" ]; then
     	print_err "gem is not installed."
 	return
     fi
