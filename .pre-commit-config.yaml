@@ -1,7 +1,7 @@
 repos:
   # Syncs pre-commit dependencies with the latest versions.
   - repo: https://github.com/mxr/sync-pre-commit-deps
-    rev: "v0.0.1"
+    rev: "v0.0.3"
     hooks:
       - id: sync-pre-commit-deps
   # Pre-commit hooks for general file checks
@@ -44,22 +44,22 @@ repos:
         types: [shell]
   # Actionlint for linting GitHub Actions YAML files
   - repo: https://github.com/rhysd/actionlint
-    rev: "v1.7.3"
+    rev: "v1.7.7"
     hooks:
       - id: actionlint
   # Yamlfmt for formatting YAML files
   - repo: https://github.com/google/yamlfmt
-    rev: "v0.13.0"
+    rev: "v0.16.0"
     hooks:
       - id: yamlfmt
   # Codespell for detecting common misspellings in code
   - repo: https://github.com/codespell-project/codespell
-    rev: "v2.3.0"
+    rev: "v2.4.1"
     hooks:
       - id: codespell
   # Gitleaks for detecting secrets in Git repositories
   - repo: https://github.com/gitleaks/gitleaks
-    rev: "v8.19.3"
+    rev: "v8.23.3"
     hooks:
       - id: gitleaks
   # Talisman for pre-commit Git hooks to detect sensitive files
