@@ -35,7 +35,7 @@ This script currently updates the following:
 - 🧑‍💻 **VSCode** extensions (`code`)
 - 📦 **Node Package Manager** packages (`npm`)
 - 💎 **RubyGems** (`gem`)
-- 🧶 **Yarn** packages (`yarn`) 
+- 🧶 **Yarn** packages (`yarn`)
 - 🚚 **Rust** packages (`cargo`)
 - 🔵 **App Store** applications (`mas`)
 - 🖥  **MacOS** system updates and patches (`softwareupdate`)
