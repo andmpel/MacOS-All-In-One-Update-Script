@@ -1,5 +1,10 @@
 # All-In-One Mac Update Script 🍎🖥️
 
+[![Dependabot Updates](https://github.com/andmpel/MacOS-All-In-One-Update-Script/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/andmpel/MacOS-All-In-One-Update-Script/actions/workflows/dependabot/dependabot-updates)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/andmpel/MacOS-All-In-One-Update-Script/master.svg)](https://results.pre-commit.ci/latest/github/andmpel/MacOS-All-In-One-Update-Script/master)
+[![Test](https://github.com/andmpel/MacOS-All-In-One-Update-Script/actions/workflows/test.yaml/badge.svg)](https://github.com/andmpel/MacOS-All-In-One-Update-Script/actions/workflows/test.yaml)
+
+
 > Inspired by the article
 [Keeping MacOS Clean](https://waxzce.medium.com/keeping-macos-clean-this-is-my-osx-brew-update-cli-command-6c8f12dc1731).
 
