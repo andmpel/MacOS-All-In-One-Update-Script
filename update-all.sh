@@ -74,8 +74,8 @@ update_gem() {
 
     # Check if the path does not match the expected path
     if [ "$GEM_PATH" = "/usr/bin/gem" ]; then
-    	print_err "gem is not installed."
-	return
+        print_err "gem is not installed."
+        return
     fi
 
     gem update --user-install && gem cleanup --user-install
