@@ -59,12 +59,12 @@ repos:
       - id: codespell
   # Gitleaks for detecting secrets in Git repositories
   - repo: https://github.com/gitleaks/gitleaks
-    rev: "v8.24.0"
+    rev: "v8.24.2"
     hooks:
       - id: gitleaks
   # Talisman for pre-commit Git hooks to detect sensitive files
   - repo: https://github.com/thoughtworks/talisman
-    rev: "v1.32.1"
+    rev: "v1.33.0"
     hooks:
       - id: talisman-commit
         entry: cmd --githook pre-commit
