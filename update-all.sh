@@ -160,7 +160,7 @@ update_all() {
     fi
 
     update_brew
-    update_vscode
+    # update_vscode
     update_gem
     update_npm
     update_yarn
