@@ -25,6 +25,7 @@ curl -fsSL https://raw.githubusercontent.com/andmpel/MacOS-All-In-One-Update-Scr
 For easy access, copy the `update-all.sh` script to a directory included in your `PATH`. Here’s how:
 
 ```sh
+curl -O https://raw.githubusercontent.com/andmpel/MacOS-All-In-One-Update-Script/refs/heads/master/update-all.sh
 USER_SCRIPTS="${HOME}/.local/bin"  # Modify as needed
 cp ./update-all.sh $USER_SCRIPTS/update
 chmod +x $USER_SCRIPTS/update
