@@ -154,22 +154,21 @@ check_internet() {
 }
 
 update_all() {
-    # Check if internet is available
-    if ! check_internet; then
-        exit 1
-    fi
+  # Check if internet is available
+  if ! check_internet; then
+    exit 1
+  fi
 
-    update_brew &
-    update_vscode &
-    update_gem &
-    update_npm &
-    update_yarn &
-    update_cargo &
-    update_app_store &
-    update_macos &
-
-    wait
+  update_brew
+  update_vscode
+  update_gem
+  update_npm
+  update_yarn
+  update_cargo
+  update_app_store
+  update_macos
 }
+
 
 # COMMENT OUT IF SOURCING
 update_all
