@@ -4,7 +4,6 @@
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/andmpel/MacOS-All-In-One-Update-Script/master.svg)](https://results.pre-commit.ci/latest/github/andmpel/MacOS-All-In-One-Update-Script/master)
 [![Test](https://github.com/andmpel/MacOS-All-In-One-Update-Script/actions/workflows/test.yaml/badge.svg)](https://github.com/andmpel/MacOS-All-In-One-Update-Script/actions/workflows/test.yaml)
 
-
 > Inspired by the article
 [Keeping MacOS Clean](https://waxzce.medium.com/keeping-macos-clean-this-is-my-osx-brew-update-cli-command-6c8f12dc1731).
 
@@ -25,7 +24,7 @@ curl -fsSL https://raw.githubusercontent.com/andmpel/MacOS-All-In-One-Update-Scr
 For easy access, copy the `update-all.sh` script to a directory included in your `PATH`. Here’s how:
 
 ```sh
-curl -O https://raw.githubusercontent.com/andmpel/MacOS-All-In-One-Update-Script/refs/heads/master/update-all.sh
+curl -fsSLO https://raw.githubusercontent.com/andmpel/MacOS-All-In-One-Update-Script/HEAD/update-all.sh
 USER_SCRIPTS="${HOME}/.local/bin"  # Modify as needed
 mv ./update-all.sh $USER_SCRIPTS/update
 chmod +x $USER_SCRIPTS/update
@@ -43,7 +42,7 @@ This script currently updates the following:
 - 💎 **RubyGems** (`gem`)
 - 🧶 **Yarn** packages (`yarn`)
 - 🚚 **Rust** packages (`cargo`)
-- 🔵 **App Store** applications (`mas`)
-- 🖥  **MacOS** system updates and patches (`softwareupdate`)
+- 🛍 **App Store** applications (`mas`)
+- 🖥 **MacOS** system updates and patches (`softwareupdate`)
 
 Feel free to contribute or customize the script to suit your needs! Happy updating! 🎉

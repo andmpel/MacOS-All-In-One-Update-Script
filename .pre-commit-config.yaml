@@ -68,3 +68,8 @@ repos:
     hooks:
       - id: talisman-commit
         entry: cmd --githook pre-commit
+  # Markdownlint for linting Markdown files
+  - repo: https://github.com/DavidAnson/markdownlint-cli2
+    rev: v0.18.1
+    hooks:
+    - id: markdownlint-cli2

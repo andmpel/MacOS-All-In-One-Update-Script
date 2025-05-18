@@ -156,7 +156,7 @@ check_internet() {
 update_all() {
     # Check if internet is available
     if ! check_internet; then
-    exit 1
+        exit 1
     fi
     update_brew
     update_vscode
@@ -170,4 +170,3 @@ update_all() {
 
 # COMMENT OUT IF SOURCING
 update_all
-

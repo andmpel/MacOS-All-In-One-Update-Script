@@ -2,6 +2,7 @@
   "customizations": {
     "vscode": {
       "extensions": [
+        "DavidAnson.vscode-markdownlint",
         "foxundermoon.shell-format",
         "mads-hartmann.bash-ide-vscode",
         "streetsidesoftware.code-spell-checker",
