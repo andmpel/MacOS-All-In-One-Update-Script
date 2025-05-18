@@ -19,18 +19,17 @@ To Download & Execute, Run the following command in your terminal:
 curl -fsSL https://raw.githubusercontent.com/andmpel/MacOS-All-In-One-Update-Script/HEAD/install.sh | zsh
 ```
 
-### Manually Configuring Alias for Repeat Use
+### Manually Downloading and Running Script
 
-For easy access, copy the `update-all.sh` script to a directory included in your `PATH`. Here’s how:
+For easy access, save the `update-all.sh` script to your Mac user's home folder, make it executable, and then run it.
 
 ```sh
-USER_SCRIPTS="${HOME}/.local/bin"  # Modify as needed
-mkdir -p "$USER_SCRIPTS"  # Ensure the directory exists
+USER_SCRIPTS="${HOME}/"
 curl -fsSLo "$USER_SCRIPTS/update" https://raw.githubusercontent.com/andmpel/MacOS-All-In-One-Update-Script/HEAD/update-all.sh
 chmod +x "$USER_SCRIPTS/update"
 ```
 
-**Now you can run the script anytime by simply typing `update` in your terminal.**
+**Now you can run the script anytime by simply typing `./update` from your home directory in your terminal.**
 
 ## Supported Updates
 
