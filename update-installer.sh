@@ -1,11 +1,8 @@
 #!/bin/sh
 
 ###################################################################################################
-# File: install.sh
-# Description: This script create an alias by downloading a
-#              predefined update-all.sh file from a GitHub repository and
-#              integrating it into the user's shell configuration
-#              files (~/.zshrc)
+# File: easy_install.sh
+# Description: This script installs the update-all.sh script and sets up the necessary environment.
 ###################################################################################################
 
 ###################################################################################################
@@ -16,41 +13,6 @@ set -eu
 
 readonly FILE_NAME="update-all.sh"
 readonly UPDATE_SCRIPT_SOURCE_URL="https://raw.githubusercontent.com/andmpel/MacOS-All-In-One-Update-Script/HEAD/${FILE_NAME}"
-
-UPDATE_SOURCE_STR=$(
-    cat <<EOF
-
-# System Update
-update() {
-    # Check if curl is available
-    if ! command -v curl >/dev/null 2>&1; then
-        echo "Error: curl is required but not installed. Please install curl." >&2
-        return
-    fi
-
-    # Check internet connection by pinging a reliable server
-    TEST_URL="https://www.google.com"
-
-    # Use curl to check the connection
-    TEST_RESP=\$(curl -Is --connect-timeout 5 --max-time 10 "\${TEST_URL}" 2>/dev/null | head -n 1)
-
-    # Check if response is empty
-    if [ -z "\${TEST_RESP}" ]; then
-        echo "No Internet Connection!!!" >&2
-        return
-    fi
-
-    # Check for "200" in the response
-    if ! printf "%s" "\${TEST_RESP}" | grep -q "200"; then
-        echo "Internet is not working!!!" >&2
-        return
-    fi
-
-    curl -fsSL ${UPDATE_SCRIPT_SOURCE_URL} | zsh
-}
-
-EOF
-)
 
 ###################################################################################################
 # Functions
@@ -72,9 +34,11 @@ print_err() {
 # Description: Update shell configuration files
 update_rc() {
     _rc=""
+    _local_bin=""
     case "${ADJUSTED_ID}" in
     darwin)
         _rc="${HOME}/.zshrc"
+        _local_bin="${HOME}/.local/bin"
         ;;
     *)
         print_err "Error: Unsupported or unrecognized distribution ${ADJUSTED_ID}"
@@ -82,30 +46,62 @@ update_rc() {
         ;;
     esac
 
-    # Check if `update` function is already defined, if not then append it
+    # Ensure HOME is set
+    if [ -z "${HOME:-}" ]; then
+        print_err "Error: HOME environment variable is not set."
+        exit 1
+    fi
+
+    # Create local bin directory if it doesn't exist
+    if ! mkdir -p "${_local_bin}"; then
+        print_err "Error: Failed to create directory ${_local_bin}."
+        exit 1
+    fi
+
+    # Download the update script
+    if ! curl -fsSLo "${_local_bin}/update" "${UPDATE_SCRIPT_SOURCE_URL}"; then
+        print_err "Error: Failed to download update script from ${UPDATE_SCRIPT_SOURCE_URL}."
+        exit 1
+    fi
+
+    # Make the script executable
+    if ! chmod +x "${_local_bin}/update"; then
+        print_err "Error: Failed to make ${_local_bin}/update executable."
+        exit 1
+    fi
+
+    # Prepare the PATH update block
+    UPDATE_SOURCE_STR="
+# Local Bin
+if [ -d \"${_local_bin}\" ]; then
+    export PATH=\"\${PATH}:${_local_bin}\"
+fi
+"
+
+    # Update or create the rc file
     if [ -f "${_rc}" ]; then
-        if ! awk '/^update\(\) {/,/^}/' "${_rc}" | grep -q 'curl'; then
+        case ":${PATH}:" in
+        *":${_local_bin}:"*) ;; # Already in PATH, do nothing
+        *)
             println "==> Updating ${_rc} for ${ADJUSTED_ID}..."
             println "${UPDATE_SOURCE_STR}" >>"${_rc}"
-        fi
+            ;;
+        esac
     else
-        # Notify if the rc file does not exist
         println "==> Profile not found. ${_rc} does not exist."
         println "==> Creating the file ${_rc}... Please note that this may not work as expected."
-        # Create the rc file
         if ! touch "${_rc}"; then
             print_err "Error: Failed to create ${_rc}."
             exit 1
         fi
-        # Append the sourcing block to the newly created rc file
         println "${UPDATE_SOURCE_STR}" >>"${_rc}"
     fi
 
     println ""
-    println "==> Close and reopen your terminal to start using 'update' alias"
+    println "==> Close and reopen your terminal to start using 'update'"
     println "    OR"
     println "==> Run the following to use it now:"
-    println ">>> source ${_rc} # This loads update alias"
+    println ">>> source ${_rc} # This loads update"
 }
 
 ###################################################################################################
