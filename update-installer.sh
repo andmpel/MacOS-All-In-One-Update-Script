@@ -35,10 +35,12 @@ print_err() {
 update_rc() {
     _rc=""
     _local_bin=""
+    _update_exe=""
     case "${ADJUSTED_ID}" in
     darwin)
         _rc="${HOME}/.zshrc"
         _local_bin="${HOME}/.local/bin"
+        _update_exe="${_local_bin}/update"
         ;;
     *)
         print_err "Error: Unsupported or unrecognized distribution ${ADJUSTED_ID}"
@@ -59,14 +61,14 @@ update_rc() {
     fi
 
     # Download the update script
-    if ! curl -fsSLo "${_local_bin}/update" "${UPDATE_SCRIPT_SOURCE_URL}"; then
+    if ! curl -fsSLo "${_update_exe}" "${UPDATE_SCRIPT_SOURCE_URL}"; then
         print_err "Error: Failed to download update script from ${UPDATE_SCRIPT_SOURCE_URL}."
         exit 1
     fi
 
     # Make the script executable
-    if ! chmod +x "${_local_bin}/update"; then
-        print_err "Error: Failed to make ${_local_bin}/update executable."
+    if ! chmod +x "${_update_exe}"; then
+        print_err "Error: Failed to make ${_update_exe} executable."
         exit 1
     fi
 
