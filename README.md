@@ -21,13 +21,15 @@ curl -fsSL https://raw.githubusercontent.com/andmpel/MacOS-All-In-One-Update-Scr
 
 ### Manually Downloading and Running Script
 
-For easy access, download the `update-installer.sh` script to your Mac user's home folder, make it executable, and run it to install the update utility:
+For easy access, save the `update-all.sh` script to your Mac user's home folder, make it executable, and then run it.
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/andmpel/MacOS-All-In-One-Update-Script/HEAD/update-installer.sh | zsh
+USER_SCRIPTS="${HOME}/"
+curl -fsSLo "$USER_SCRIPTS/update" https://raw.githubusercontent.com/andmpel/MacOS-All-In-One-Update-Script/HEAD/update-all.sh
+chmod +x "$USER_SCRIPTS/update"
 ```
 
-**After installation, you can run the update script anytime by simply typing `update` in your terminal.**
+**Now you can run the script anytime by simply typing `./update` from your home directory in your terminal.**
 
 ## Supported Updates
 
