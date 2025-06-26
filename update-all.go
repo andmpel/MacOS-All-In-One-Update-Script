@@ -132,9 +132,9 @@ func main() {
 	}
 	updateBrew()
 	updateVSCode()
-	//	updateGem()
-	//	updateNpm()
-	//  updateYarn()
+	updateGem()
+	updateNpm()
+	updateYarn()
 	updateCargo()
 	updateAppStore()
 	updateMacOS()
