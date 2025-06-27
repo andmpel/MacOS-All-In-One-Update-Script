@@ -78,20 +78,3 @@ repos:
     rev: v0.18.1
     hooks:
       - id: markdownlint-cli2
-  # Go tools for linting and formatting Go code
-  - repo: https://github.com/dnephin/pre-commit-golang
-    rev: v0.5.1
-    hooks:
-      - id: go-fmt
-      - id: go-vet
-      - id: go-lint
-      - id: go-imports
-      - id: go-cyclo
-        args: [-over=15]
-      - id: validate-toml
-      - id: no-go-testing
-      - id: golangci-lint
-      - id: go-critic
-      - id: go-unit-tests
-      - id: go-build
-      - id: go-mod-tidy
