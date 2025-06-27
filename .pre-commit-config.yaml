@@ -68,3 +68,13 @@ repos:
     hooks:
       - id: talisman-commit
         entry: cmd --githook pre-commit
+  # Checkmake for linting Makefiles
+  - repo: https://github.com/mrtazz/checkmake
+    rev: "0.2.2"
+    hooks:
+      - id: checkmake
+  # Markdownlint for linting Markdown files
+  - repo: https://github.com/DavidAnson/markdownlint-cli2
+    rev: v0.18.1
+    hooks:
+      - id: markdownlint-cli2

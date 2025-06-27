@@ -3,10 +3,12 @@
     "vscode": {
       "extensions": [
         "DavidAnson.vscode-markdownlint",
+        "MindpathTechnologyLimited.code-error-lens",
+        "Tyriar.sort-lines",
         "foxundermoon.shell-format",
+        "golang.Go",
         "mads-hartmann.bash-ide-vscode",
-        "streetsidesoftware.code-spell-checker",
-        "usernamehw.errorlens"
+        "streetsidesoftware.code-spell-checker"
       ],
       "settings": {
         "[shellscript]": {
@@ -18,7 +20,6 @@
         "editor.tabCompletion": "on",
         "editor.tabSize": 2,
         "editor.trimAutoWhitespace": true,
-        "extensions.autoUpdate": true,
         "extensions.ignoreRecommendations": true,
         "files.autoSave": "afterDelay",
         "files.eol": "\n",
@@ -29,15 +30,11 @@
           "**/*.git": true,
           "**/*.vscode-server": true
         },
-        "windows.title": "${folderPath}",
         "workbench.startupEditor": "none"
       }
     }
   },
-  "features": {
-    "ghcr.io/gvatsal60/dev-container-features/pre-commit": {}
-  },
-  "image": "mcr.microsoft.com/devcontainers/base:noble",
+  "image": "mcr.microsoft.com/devcontainers/go:latest",
   "runArgs": [
     "--rm",
     "--name=vsc-${localEnv:USER}-${containerWorkspaceFolderBasename}-${devcontainerId}"

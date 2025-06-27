@@ -1,4 +1,4 @@
-package main
+package macup
 
 import (
 	"fmt"
@@ -10,30 +10,35 @@ import (
 )
 
 const (
-	green  = "\033[32m"
-	red    = "\033[31m"
-	yellow = "\033[33m"
-	clear  = "\033[0m"
+	k_green      = "\033[32m"
+	k_red        = "\033[31m"
+	k_yellow     = "\033[33m"
+	k_clear      = "\033[0m"
+	k_timeout    = 5 * time.Second          // Timeout for HTTP requests
+	k_testURL    = "https://www.google.com" // URL to test internet connection
+	k_gemCmdPath = "/usr/bin/gem"           // Path to the gem command
 )
 
 func printlnGreen(msg string) {
-	fmt.Printf("\n%s%s%s\n", green, msg, clear)
+	fmt.Printf("\n%s%s%s\n", k_green, msg, k_clear)
 }
 
 func printlnYellow(msg string) {
-	fmt.Printf("\n%s%s%s\n", yellow, msg, clear)
+	fmt.Printf("\n%s%s%s\n", k_yellow, msg, k_clear)
 }
 
 func printlnRed(msg string) {
-	fmt.Fprintf(os.Stderr, "\n%s%s%s\n", red, msg, clear)
+	fmt.Fprintf(os.Stderr, "\n%s%s%s\n", k_red, msg, k_clear)
 }
 
 func checkCommand(cmd string) bool {
 	_, err := exec.LookPath(cmd)
+
 	if err != nil {
 		printlnYellow(cmd + " is not installed.")
-		return true
+		return false
 	}
+
 	return true
 }
 
@@ -44,7 +49,7 @@ func runCommand(name string, args ...string) {
 	cmd.Run()
 }
 
-func updateBrew() {
+func UpdateBrew() {
 	printlnGreen("Updating Brew Formulas")
 	if checkCommand("brew") {
 		runCommand("brew", "update")
@@ -56,17 +61,17 @@ func updateBrew() {
 	}
 }
 
-func updateVSCode() {
+func UpdateVSCode() {
 	printlnGreen("Updating VSCode Extensions")
 	if checkCommand("code") {
-		runCommand("code", "--install-extension")
+		runCommand("code", "--update-extensions")
 	}
 }
 
-func updateGem() {
+func UpdateGem() {
 	printlnGreen("Updating Gems")
 	gemPath, err := exec.LookPath("gem")
-	if err != nil || gemPath == "/usr/bin/gem" {
+	if err != nil || gemPath == k_gemCmdPath {
 		printlnRed("gem is not installed.")
 		return
 	}
@@ -74,26 +79,26 @@ func updateGem() {
 	runCommand("gem", "cleanup", "--user-install")
 }
 
-func updateNpm() {
+func UpdateNpm() {
 	printlnGreen("Updating Npm Packages")
 	if checkCommand("npm") {
 		runCommand("npm", "update", "-g")
 	}
 }
 
-func updateYarn() {
+func UpdateYarn() {
 	printlnGreen("Updating Yarn Packages")
 	if checkCommand("yarn") {
 		runCommand("yarn", "upgrade", "--latest")
 	}
 }
 
-func updateCargo() {
+func UpdateCargo() {
 	printlnGreen("Updating Rust Cargo Crates")
 	if checkCommand("cargo") {
 		out, _ := exec.Command("cargo", "install", "--list").Output()
-		lines := strings.Split(string(out), "\n")
-		for _, line := range lines {
+		lines := strings.SplitSeq(string(out), "\n")
+		for line := range lines {
 			if fields := strings.Fields(line); len(fields) > 0 {
 				name := fields[0]
 				runCommand("cargo", "install", name)
@@ -102,40 +107,30 @@ func updateCargo() {
 	}
 }
 
-func updateAppStore() {
+func UpdateAppStore() {
 	printlnGreen("Updating App Store Applications")
 	if checkCommand("mas") {
 		runCommand("mas", "upgrade")
 	}
 }
 
-func updateMacOS() {
+func UpdateMacOS() {
 	printlnGreen("Updating MacOS")
 	runCommand("softwareupdate", "-i", "-a")
 }
 
-func checkInternet() bool {
+func CheckInternet() bool {
 	client := http.Client{
-		Timeout: 5 * time.Second,
+		Timeout: k_timeout,
 	}
-	resp, err := client.Get("https://www.google.com")
+
+	resp, err := client.Get(k_testURL)
+
 	if err != nil {
+		printlnRed("⚠️ No Internet Connection!!!")
 		return false
 	}
 	defer resp.Body.Close()
-	return resp.StatusCode == http.StatusOK
-}
 
-func main() {
-	if !checkInternet() {
-		os.Exit(1)
-	}
-	updateBrew()
-	updateVSCode()
-	updateGem()
-	updateNpm()
-	updateYarn()
-	updateCargo()
-	updateAppStore()
-	updateMacOS()
+	return resp.StatusCode == http.StatusOK
 }
