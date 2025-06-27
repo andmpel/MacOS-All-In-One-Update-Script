@@ -3,10 +3,11 @@
     "vscode": {
       "extensions": [
         "DavidAnson.vscode-markdownlint",
+        "MindpathTechnologyLimited.code-error-lens",
+        "Tyriar.sort-lines",
         "foxundermoon.shell-format",
         "golang.Go",
         "mads-hartmann.bash-ide-vscode",
-        "MindpathTechnologyLimited.code-error-lens",
         "streetsidesoftware.code-spell-checker"
       ],
       "settings": {

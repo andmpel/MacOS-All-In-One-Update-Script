@@ -10,10 +10,10 @@ import (
 )
 
 const (
-	green  = "\033[32m"
-	red    = "\033[31m"
-	yellow = "\033[33m"
-	clear  = "\033[0m"
+	green   = "\033[32m"
+	red     = "\033[31m"
+	yellow  = "\033[33m"
+	clear   = "\033[0m"
 	timeout = 5 * time.Second
 	testURL = "https://www.google.com" // URL to test internet connection
 )

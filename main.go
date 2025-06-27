@@ -1,8 +1,8 @@
 package main
 
 import (
-	"os"
 	"macup/macup"
+	"os"
 )
 
 func main() {
@@ -10,11 +10,11 @@ func main() {
 		os.Exit(1)
 	}
 	macup.UpdateBrew()
-	// macup.UpdateVSCode()
-	// macup.UpdateGem()
-	// macup.UpdateNpm()
-	// macup.UpdateYarn()
-	// macup.UpdateCargo()
-	// macup.UpdateAppStore()
-	// macup.UpdateMacOS()
+	macup.UpdateVSCode()
+	macup.UpdateGem()
+	macup.UpdateNpm()
+	macup.UpdateYarn()
+	macup.UpdateCargo()
+	macup.UpdateAppStore()
+	macup.UpdateMacOS()
 }
