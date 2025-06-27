@@ -10,32 +10,35 @@ import (
 )
 
 const (
-	green   = "\033[32m"
-	red     = "\033[31m"
-	yellow  = "\033[33m"
-	clear   = "\033[0m"
-	timeout = 5 * time.Second
-	testURL = "https://www.google.com" // URL to test internet connection
+	k_green      = "\033[32m"
+	k_red        = "\033[31m"
+	k_yellow     = "\033[33m"
+	k_clear      = "\033[0m"
+	k_timeout    = 5 * time.Second          // Timeout for HTTP requests
+	k_testURL    = "https://www.google.com" // URL to test internet connection
+	k_gemCmdPath = "/usr/bin/gem"           // Path to the gem command
 )
 
 func printlnGreen(msg string) {
-	fmt.Printf("\n%s%s%s\n", green, msg, clear)
+	fmt.Printf("\n%s%s%s\n", k_green, msg, k_clear)
 }
 
 func printlnYellow(msg string) {
-	fmt.Printf("\n%s%s%s\n", yellow, msg, clear)
+	fmt.Printf("\n%s%s%s\n", k_yellow, msg, k_clear)
 }
 
 func printlnRed(msg string) {
-	fmt.Fprintf(os.Stderr, "\n%s%s%s\n", red, msg, clear)
+	fmt.Fprintf(os.Stderr, "\n%s%s%s\n", k_red, msg, k_clear)
 }
 
 func checkCommand(cmd string) bool {
 	_, err := exec.LookPath(cmd)
+
 	if err != nil {
 		printlnYellow(cmd + " is not installed.")
-		return true
+		return false
 	}
+
 	return true
 }
 
@@ -61,14 +64,14 @@ func UpdateBrew() {
 func UpdateVSCode() {
 	printlnGreen("Updating VSCode Extensions")
 	if checkCommand("code") {
-		runCommand("code", "--install-extension")
+		runCommand("code", "--update-extensions")
 	}
 }
 
 func UpdateGem() {
 	printlnGreen("Updating Gems")
 	gemPath, err := exec.LookPath("gem")
-	if err != nil || gemPath == "/usr/bin/gem" {
+	if err != nil || gemPath == k_gemCmdPath {
 		printlnRed("gem is not installed.")
 		return
 	}
@@ -118,13 +121,15 @@ func UpdateMacOS() {
 
 func CheckInternet() bool {
 	client := http.Client{
-		Timeout: timeout,
-	}
-	resp, err := client.Get(testURL)
-	if err != nil {
-		return false
+		Timeout: k_timeout,
 	}
 
+	resp, err := client.Get(k_testURL)
+
+	if err != nil {
+		printlnRed("⚠️ No Internet Connection!!!")
+		return false
+	}
 	defer resp.Body.Close()
 
 	return resp.StatusCode == http.StatusOK

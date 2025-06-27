@@ -34,9 +34,6 @@
       }
     }
   },
-  "features": {
-    "ghcr.io/gvatsal60/dev-container-features/pre-commit": {}
-  },
   "image": "mcr.microsoft.com/devcontainers/go:latest",
   "runArgs": [
     "--rm",
