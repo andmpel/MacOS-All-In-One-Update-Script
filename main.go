@@ -9,6 +9,7 @@ func main() {
 	if !macup.CheckInternet() {
 		os.Exit(1)
 	}
+
 	macup.UpdateBrew()
 	macup.UpdateVSCode()
 	macup.UpdateGem()

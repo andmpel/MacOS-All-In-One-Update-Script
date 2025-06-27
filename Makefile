@@ -1,4 +1,4 @@
-# # Makefile for building `update` binaries for macOS
+# Makefile for building `update` binaries for macOS
 
 GOOS := darwin
 GOARCH_AMD64 := amd64
