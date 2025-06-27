@@ -1,4 +1,4 @@
-package main
+package macup
 
 import (
 	"fmt"
@@ -14,6 +14,8 @@ const (
 	red    = "\033[31m"
 	yellow = "\033[33m"
 	clear  = "\033[0m"
+	timeout = 5 * time.Second
+	testURL = "https://www.google.com" // URL to test internet connection
 )
 
 func printlnGreen(msg string) {
@@ -44,7 +46,7 @@ func runCommand(name string, args ...string) {
 	cmd.Run()
 }
 
-func updateBrew() {
+func UpdateBrew() {
 	printlnGreen("Updating Brew Formulas")
 	if checkCommand("brew") {
 		runCommand("brew", "update")
@@ -56,14 +58,14 @@ func updateBrew() {
 	}
 }
 
-func updateVSCode() {
+func UpdateVSCode() {
 	printlnGreen("Updating VSCode Extensions")
 	if checkCommand("code") {
 		runCommand("code", "--install-extension")
 	}
 }
 
-func updateGem() {
+func UpdateGem() {
 	printlnGreen("Updating Gems")
 	gemPath, err := exec.LookPath("gem")
 	if err != nil || gemPath == "/usr/bin/gem" {
@@ -74,26 +76,26 @@ func updateGem() {
 	runCommand("gem", "cleanup", "--user-install")
 }
 
-func updateNpm() {
+func UpdateNpm() {
 	printlnGreen("Updating Npm Packages")
 	if checkCommand("npm") {
 		runCommand("npm", "update", "-g")
 	}
 }
 
-func updateYarn() {
+func UpdateYarn() {
 	printlnGreen("Updating Yarn Packages")
 	if checkCommand("yarn") {
 		runCommand("yarn", "upgrade", "--latest")
 	}
 }
 
-func updateCargo() {
+func UpdateCargo() {
 	printlnGreen("Updating Rust Cargo Crates")
 	if checkCommand("cargo") {
 		out, _ := exec.Command("cargo", "install", "--list").Output()
-		lines := strings.Split(string(out), "\n")
-		for _, line := range lines {
+		lines := strings.SplitSeq(string(out), "\n")
+		for line := range lines {
 			if fields := strings.Fields(line); len(fields) > 0 {
 				name := fields[0]
 				runCommand("cargo", "install", name)
@@ -102,40 +104,28 @@ func updateCargo() {
 	}
 }
 
-func updateAppStore() {
+func UpdateAppStore() {
 	printlnGreen("Updating App Store Applications")
 	if checkCommand("mas") {
 		runCommand("mas", "upgrade")
 	}
 }
 
-func updateMacOS() {
+func UpdateMacOS() {
 	printlnGreen("Updating MacOS")
 	runCommand("softwareupdate", "-i", "-a")
 }
 
-func checkInternet() bool {
+func CheckInternet() bool {
 	client := http.Client{
-		Timeout: 5 * time.Second,
+		Timeout: timeout,
 	}
-	resp, err := client.Get("https://www.google.com")
+	resp, err := client.Get(testURL)
 	if err != nil {
 		return false
 	}
-	defer resp.Body.Close()
-	return resp.StatusCode == http.StatusOK
-}
 
-func main() {
-	if !checkInternet() {
-		os.Exit(1)
-	}
-	updateBrew()
-	updateVSCode()
-	updateGem()
-	updateNpm()
-	updateYarn()
-	updateCargo()
-	updateAppStore()
-	updateMacOS()
+	defer resp.Body.Close()
+
+	return resp.StatusCode == http.StatusOK
 }
