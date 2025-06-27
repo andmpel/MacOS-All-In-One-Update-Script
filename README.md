@@ -11,25 +11,25 @@ This Zsh script simplifies the process of updating all your macOS software direc
 
 ## Getting Started
 
-### Install Script as Alias for Repeat Use
+### Option 1: Install `update` as an Alias
 
-To Download & Execute, Run the following command in your terminal:
+This method ensures that the script always points to the latest available version. To install:
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/andmpel/MacOS-All-In-One-Update-Script/HEAD/install.sh | zsh
 ```
 
-### Manually Downloading and Running Script
+### Option 2: Install `update` as an Executable
 
-For easy access, save the `update-all.sh` script to your Mac user's home folder, make it executable, and then run it.
+This method installs the script so that the update command will point to the current version at the time of installation. To proceed, run:
 
 ```sh
-USER_SCRIPTS="${HOME}/"
-curl -fsSLo "$USER_SCRIPTS/update" https://raw.githubusercontent.com/andmpel/MacOS-All-In-One-Update-Script/HEAD/update-all.sh
-chmod +x "$USER_SCRIPTS/update"
+curl -fsSL https://raw.githubusercontent.com/andmpel/MacOS-All-In-One-Update-Script/HEAD/update-installer.sh | zsh
 ```
 
-**Now you can run the script anytime by simply typing `./update` from your home directory in your terminal.**
+The script will automatically be placed as an executable file in `${HOME}/.local/bin`
+
+#### **After installation, you can run the update script anytime by simply typing `update` in your terminal.**
 
 ## Supported Updates
 
