@@ -12,19 +12,19 @@ BIN_UNIVERSAL := $(BIN_DIR)/$(BIN_NAME)
 
 .PHONY: all clean test build universal
 
-all: build
+all: build universal
 
 build:
 	@echo "🔧 Creating Binaries"
 	@GOOS=$(GOOS) GOARCH=$(GOARCH_AMD64) go build -o $(BIN_AMD64)
 	@GOOS=$(GOOS) GOARCH=$(GOARCH_ARM64) go build -o $(BIN_ARM64)
-	@echo "✅ Build Completed"
+	@echo "✅ Binary Created: $(BIN_AMD64), $(BIN_ARM64)"
 
-universal: build
+universal:
 	@command -v lipo >/dev/null 2>&1 || { echo >&2 "⚠️ lipo not found. Run 'xcode-select --install' on macOS."; exit 1; }
 	@echo "🔧 Creating Universal Binary"
 	@lipo -create -output $(BIN_UNIVERSAL) $(BIN_AMD64) $(BIN_ARM64)
-	@echo "✅ Universal Binary Created"
+	@echo "✅ Universal Binary Created: $(BIN_UNIVERSAL)"
 
 test:
 	@echo "🧪 Running Tests"
