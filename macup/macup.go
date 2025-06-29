@@ -79,17 +79,16 @@ func UpdateGem() {
 	runCommand("gem", "cleanup", "--user-install")
 }
 
-func UpdateNpm() {
-	printlnGreen("Updating Npm Packages")
-	if checkCommand("npm") {
-		runCommand("npm", "update", "-g")
-	}
-}
+func UpdateNodePkg() {
+	printlnGreen("Updating Node Packages")
+	if checkCommand("node") {
+		if checkCommand("npm") {
+			runCommand("npm", "update", "-g")
+		}
 
-func UpdateYarn() {
-	printlnGreen("Updating Yarn Packages")
-	if checkCommand("yarn") {
-		runCommand("yarn", "upgrade", "--latest")
+		if checkCommand("yarn") {
+			runCommand("yarn", "upgrade", "--latest")
+		}
 	}
 }
 
