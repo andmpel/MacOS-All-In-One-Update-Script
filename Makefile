@@ -12,7 +12,7 @@ BIN_UNIVERSAL := $(BIN_DIR)/$(BIN_NAME)
 
 .PHONY: all clean test build universal
 
-all: build universal
+all: clean build universal
 
 build:
 	@echo "🔧 Creating Binaries"

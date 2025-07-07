@@ -101,6 +101,17 @@ update_yarn() {
     yarn upgrade --latest
 }
 
+update_node_pkgs() {
+    println "Updating Node Packages"
+
+    if ! check_command node; then
+        return
+    fi
+
+    update_npm
+    update_yarn
+}
+
 update_cargo() {
     println "Updating Rust Cargo Crates"
 
@@ -161,8 +172,7 @@ update_all() {
     update_brew
     update_vscode
     update_gem
-    update_npm
-    update_yarn
+    update_node_pkgs
     update_cargo
     update_app_store
     update_macos

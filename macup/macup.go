@@ -82,10 +82,12 @@ func UpdateGem() {
 func UpdateNodePkg() {
 	printlnGreen("Updating Node Packages")
 	if checkCommand("node") {
+		printlnGreen("Updating Npm Packages")
 		if checkCommand("npm") {
 			runCommand("npm", "update", "-g")
 		}
 
+		printlnGreen("Updating Yarn Packages")
 		if checkCommand("yarn") {
 			runCommand("yarn", "upgrade", "--latest")
 		}

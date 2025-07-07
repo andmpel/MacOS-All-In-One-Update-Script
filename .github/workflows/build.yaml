@@ -6,11 +6,13 @@ on:
       - main
       - master
   pull_request:
-
+    branches: ["*"]
 jobs:
   build:
-    runs-on: ubuntu-latest
-
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-13, macos-14, macos-15, macos-latest]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
