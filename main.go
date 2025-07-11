@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"fmt"
 	"io"
 	"macup/macup"
 	"os"
@@ -38,4 +39,8 @@ func main() {
 	}
 
 	wg.Wait()
+
+	for i := range updateFuncs {
+		fmt.Println(buffers[i].String())
+	}
 }
