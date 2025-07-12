@@ -2,9 +2,7 @@ package main
 
 import (
 	"bytes"
-	"flag"
 	"fmt"
-	"io"
 	"macup/macup"
 	"os"
 	"sync"
@@ -17,53 +15,52 @@ func main() {
 		os.Exit(1)
 	}
 
-	// Define flags for each update function
-	brewFlag := flag.Bool("brew", false, "Update Homebrew packages")
-	vscodeFlag := flag.Bool("vscode", false, "Update VSCode extensions")
-	gemFlag := flag.Bool("gem", false, "Update Ruby gems")
-	nodeFlag := flag.Bool("node", false, "Update Node.js packages")
-	cargoFlag := flag.Bool("cargo", false, "Update Rust packages")
-	appstoreFlag := flag.Bool("appstore", false, "Update Mac App Store apps")
-	macosFlag := flag.Bool("macos", false, "Update macOS system")
-	flag.Parse()
-
-	// List of update functions to run in parallel
-	updateFuncs := []struct {
-		fn   func(writer io.Writer)
-		flag bool
-	}{
-		{macup.UpdateBrew, *brewFlag},
-		{macup.UpdateVSCodeExt, *vscodeFlag},
-		{macup.UpdateGem, *gemFlag},
-		{macup.UpdateNodePkg, *nodeFlag},
-		{macup.UpdateCargo, *cargoFlag},
-		{macup.UpdateAppStore, *appstoreFlag},
-		{macup.UpdateMacOS, *macosFlag},
+	// Load user's previous selections
+	config, err := macup.LoadConfig()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error loading config: %v\n", err)
+		os.Exit(1)
 	}
 
-	runAll := flag.NFlag() == 0
+	// Prompt the user to select updates
+	selectedUpdates, err := macup.SelectUpdates(config)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error selecting updates: %v\n", err)
+		os.Exit(1)
+	}
 
+	// Save the user's selections
+	config.SelectedUpdates = selectedUpdates
+	if err := config.SaveConfig(); err != nil {
+		fmt.Fprintf(os.Stderr, "Error saving config: %v\n", err)
+		os.Exit(1)
+	}
+
+	// Run the selected updates
 	var wg sync.WaitGroup
-	buffers := make([]*bytes.Buffer, len(updateFuncs))
+	buffers := make(map[string]*bytes.Buffer)
+	for _, updateName := range selectedUpdates {
+		buffers[updateName] = &bytes.Buffer{}
+	}
 
-	// Run each update function in a separate goroutine
-	for i, u := range updateFuncs {
-		if runAll || u.flag {
-			wg.Add(1)
-			buffers[i] = &bytes.Buffer{}
-			go func(fn func(writer io.Writer), buffer *bytes.Buffer) {
-				defer wg.Done()
-				fn(buffer) // Execute update and write output to buffer
-			}(u.fn, buffers[i])
+	for _, updateName := range selectedUpdates {
+		for _, u := range macup.Updates {
+			if u.Name == updateName {
+				wg.Add(1)
+				go func(u macup.Update) {
+					defer wg.Done()
+					u.Run(buffers[u.Name])
+				}(u)
+			}
 		}
 	}
 
-	wg.Wait() // Wait for all updates to finish
+	wg.Wait()
 
 	// Print the output of each update function
-	for i, u := range updateFuncs {
-		if (runAll || u.flag) && buffers[i] != nil {
-			fmt.Println(buffers[i].String())
+	for _, updateName := range selectedUpdates {
+		if buffer, ok := buffers[updateName]; ok {
+			fmt.Println(buffer.String())
 		}
 	}
 }
