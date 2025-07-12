@@ -1,9 +1,7 @@
-name: Build `macup`
+name: Build MacUp
 on:
   push:
-    branches:
-      - main
-      - master
+    branches: ["*"]
   pull_request:
     branches: ["*"]
 jobs:
