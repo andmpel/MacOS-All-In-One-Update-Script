@@ -34,10 +34,10 @@
       }
     }
   },
-  "image": "mcr.microsoft.com/devcontainers/go:latest",
   "features": {
     "ghcr.io/gvatsal60/dev-container-features/sonarlint": "latest"
   },
+  "image": "mcr.microsoft.com/devcontainers/go:latest",
   "runArgs": [
     "--rm",
     "--name=vsc-${localEnv:USER}-${containerWorkspaceFolderBasename}-${devcontainerId}"
