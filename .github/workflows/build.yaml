@@ -1,5 +1,4 @@
 name: Build `macup`
-
 on:
   push:
     branches:
