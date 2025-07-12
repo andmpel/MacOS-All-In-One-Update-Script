@@ -11,12 +11,12 @@ import (
 )
 
 const (
-	k_green   = "\033[32m"
-	k_red     = "\033[31m"
-	k_yellow  = "\033[33m"
-	k_clear   = "\033[0m"
-	k_timeout = 5 * time.Second          // Timeout for HTTP requests
-	k_testURL = "https://www.google.com" // URL to test internet connection
+	k_green      = "\033[32m"
+	k_red        = "\033[31m"
+	k_yellow     = "\033[33m"
+	k_clear      = "\033[0m"
+	k_timeout    = 5 * time.Second          // Timeout for HTTP requests
+	k_testURL    = "https://www.google.com" // URL to test internet connection
 	k_gemCmdPath = "/usr/bin/gem"           // Path to the gem command
 )
 
@@ -28,9 +28,11 @@ func printlnYellow(writer io.Writer, msg string) {
 	fmt.Fprintf(writer, "\n%s%s%s\n", k_yellow, msg, k_clear)
 }
 
+/*
 func printlnRed(writer io.Writer, msg string) {
 	fmt.Fprintf(writer, "\n%s%s%s\n", k_red, msg, k_clear)
 }
+*/
 
 func checkCommand(writer io.Writer, cmd string) bool {
 	_, err := exec.LookPath(cmd)
@@ -73,7 +75,7 @@ func UpdateGem(writer io.Writer) {
 	printlnGreen(writer, "Updating Gems")
 	gemPath, err := exec.LookPath("gem")
 	if err != nil || gemPath == k_gemCmdPath {
-		printlnRed(writer, "gem is not installed.")
+		printlnYellow(writer, "gem is not installed.")
 		return
 	}
 	runCommand(writer, "gem", "update", "--user-install")
