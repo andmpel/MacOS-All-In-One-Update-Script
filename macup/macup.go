@@ -25,7 +25,7 @@ func printlnGreen(writer io.Writer, msg string) {
 }
 
 func printlnYellow(writer io.Writer, msg string) {
-	fmt.Fprintf(writer, "\n%s%s%s\n", k_yellow, msg, k_clear)
+	fmt.Fprintf(writer, "%s%s%s", k_yellow, msg, k_clear)
 }
 
 /*
