@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"io"
 	"macup/macup"
 	"os"
 	"sync"
@@ -16,36 +15,52 @@ func main() {
 		os.Exit(1)
 	}
 
-	// List of update functions to run in parallel
-	updateFuncs := []struct {
-		fn func(writer io.Writer)
-	}{
-		{macup.UpdateBrew},      // Update Homebrew packages
-		{macup.UpdateVSCodeExt}, // Update VSCode extensions
-		{macup.UpdateGem},       // Update Ruby gems
-		{macup.UpdateNodePkg},   // Update Node.js packages
-		{macup.UpdateCargo},     // Update Rust packages
-		{macup.UpdateAppStore},  // Update Mac App Store apps
-		{macup.UpdateMacOS},     // Update macOS system
+	// Load user's previous selections
+	config, err := macup.LoadConfig()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error loading config: %v\n", err)
+		os.Exit(1)
 	}
 
+	// Prompt the user to select updates
+	selectedUpdates, err := macup.SelectUpdates(config)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error selecting updates: %v\n", err)
+		os.Exit(1)
+	}
+
+	// Save the user's selections
+	config.SelectedUpdates = selectedUpdates
+	if err := config.SaveConfig(); err != nil {
+		fmt.Fprintf(os.Stderr, "Error saving config: %v\n", err)
+		os.Exit(1)
+	}
+
+	// Run the selected updates
 	var wg sync.WaitGroup
-	buffers := make([]*bytes.Buffer, len(updateFuncs))
-
-	// Run each update function in a separate goroutine
-	for i, u := range updateFuncs {
-		wg.Add(1)
-		buffers[i] = &bytes.Buffer{}
-		go func(fn func(writer io.Writer), buffer *bytes.Buffer) {
-			defer wg.Done()
-			fn(buffer) // Execute update and write output to buffer
-		}(u.fn, buffers[i])
+	buffers := make(map[string]*bytes.Buffer)
+	for _, updateName := range selectedUpdates {
+		buffers[updateName] = &bytes.Buffer{}
 	}
 
-	wg.Wait() // Wait for all updates to finish
+	for _, updateName := range selectedUpdates {
+		for _, u := range macup.Updates {
+			if u.Name == updateName {
+				wg.Add(1)
+				go func(u macup.Update) {
+					defer wg.Done()
+					u.Run(buffers[u.Name])
+				}(u)
+			}
+		}
+	}
+
+	wg.Wait()
 
 	// Print the output of each update function
-	for i := range updateFuncs {
-		fmt.Println(buffers[i].String())
+	for _, updateName := range selectedUpdates {
+		if buffer, ok := buffers[updateName]; ok {
+			fmt.Println(buffer.String())
+		}
 	}
 }
