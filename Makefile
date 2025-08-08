@@ -54,7 +54,7 @@ ifeq ($(shell go env GOHOSTOS), darwin)
 			GOARCH=$(GO_ARCH_AMD64) $(BUILD_CMD) -o $(BIN_AMD64); \
 			GOARCH=$(GO_ARCH_ARM64) $(BUILD_CMD) -o $(BIN_ARM64); \
 			lipo -create -output $(UNIVERSAL_BINARY) $(BIN_AMD64) $(BIN_ARM64); \
-			echo "Universal binary created at $(UNIVERSAL_BINARY)"; \
+			echo "Universal binary created at $(BIN_UNIVERSAL)"; \
 	else \
 			echo "'lipo' not found. Please install Xcode Command Line Tools: xcode-select --install"; \
 	fi
