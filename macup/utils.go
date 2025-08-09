@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 	"time"
 )
 
@@ -28,6 +29,11 @@ func printlnGreen(writer io.Writer, msg string) {
 	fmt.Fprintf(writer, "\n%s%s%s\n", k_green, msg, k_clear)
 }
 
+// printlnRed prints a message in red color (no newline).
+func printlnRed(writer io.Writer, msg string) {
+	fmt.Fprintf(writer, "%s%s%s", k_red, msg, k_clear)
+}
+
 // printlnYellow prints a message in yellow color (no newline).
 func printlnYellow(writer io.Writer, msg string) {
 	fmt.Fprintf(writer, "%s%s%s", k_yellow, msg, k_clear)
@@ -45,6 +51,30 @@ func checkCommand(writer io.Writer, cmd string) bool {
 
 // runCommand runs a shell command and directs its output to writer.
 func runCommand(writer io.Writer, name string, args ...string) {
+	// Allow only specific commands
+	allowedCommands := map[string]bool{
+		"brew":           true,
+		"code":           true,
+		"gem":            true,
+		"npm":            true,
+		"yarn":           true,
+		"cargo":          true,
+		"mas":            true,
+		"softwareupdate": true,
+	}
+
+	if !allowedCommands[name] {
+		printlnRed(writer, "Command not allowed: "+name)
+		return
+	}
+	// Optionally validate arguments (e.g., no special characters)
+	for _, arg := range args {
+		if strings.ContainsAny(arg, "&|;$><") {
+			printlnRed(writer, "Invalid Argument: "+arg)
+			return
+		}
+	}
+
 	cmd := exec.Command(name, args...)
 	cmd.Stdout = writer
 	cmd.Stderr = writer
