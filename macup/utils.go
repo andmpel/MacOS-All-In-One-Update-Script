@@ -78,7 +78,9 @@ func runCommand(writer io.Writer, name string, args ...string) {
 	cmd := exec.Command(name, args...)
 	cmd.Stdout = writer
 	cmd.Stderr = writer
-	cmd.Run()
+	if err := cmd.Run(); err != nil {
+		printlnRed(writer, "Error running command: "+err.Error())
+	}
 }
 
 // CheckInternet checks for internet connectivity by making an HTTP request.
