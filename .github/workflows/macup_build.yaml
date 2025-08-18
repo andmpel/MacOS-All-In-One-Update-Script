@@ -21,5 +21,5 @@ jobs:
         run: go mod download
       - name: Build Go project
         run: make all
-      # - name: Run Go tests
-      #   run: make test
+    # - name: Run Go tests
+    #   run: make test
