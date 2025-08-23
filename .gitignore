@@ -2,6 +2,7 @@
 bin/
 build/
 *.exe
+*.exe~
 *.dll
 *.so
 *.dylib
