@@ -6,7 +6,7 @@ repos:
       - id: sync-pre-commit-deps
   # Pre-commit hooks for general file checks
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: "v5.0.0"
+    rev: "v6.0.0"
     hooks:
       - id: check-added-large-files
       - id: check-case-conflict
@@ -27,7 +27,7 @@ repos:
       - id: trailing-whitespace
   # ShellCheck hook for linting shell scripts
   - repo: https://github.com/shellcheck-py/shellcheck-py
-    rev: "v0.10.0.1"
+    rev: "v0.11.0.1"
     hooks:
       - id: shellcheck
         name: shellcheck
