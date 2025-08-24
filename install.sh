@@ -11,8 +11,8 @@
 ###################################################################################################
 # Global Variables & Constants
 ###################################################################################################
-# Exit the script immediately if any command fails
-set -e
+# Exit the script immediately if any command fails or if an unset variable is used
+set -eu
 
 readonly FILE_NAME="update-all.sh"
 readonly UPDATE_SCRIPT_SOURCE_URL="https://raw.githubusercontent.com/andmpel/MacOS-All-In-One-Update-Script/HEAD/${FILE_NAME}"
@@ -72,7 +72,7 @@ print_err() {
 # Description: Update shell configuration files
 update_rc() {
     _rc=""
-    case $ADJUSTED_ID in
+    case "${ADJUSTED_ID}" in
     darwin)
         _rc="${HOME}/.zshrc"
         ;;
@@ -82,7 +82,7 @@ update_rc() {
         ;;
     esac
 
-    # Check if `alias update='sudo sh ${HOME}/.update.sh'` is already defined, if not then append it
+    # Check if `update` function is already defined, if not then append it
     if [ -f "${_rc}" ]; then
         if ! awk '/^update\(\) {/,/^}/' "${_rc}" | grep -q 'curl'; then
             println "==> Updating ${_rc} for ${ADJUSTED_ID}..."
@@ -93,7 +93,10 @@ update_rc() {
         println "==> Profile not found. ${_rc} does not exist."
         println "==> Creating the file ${_rc}... Please note that this may not work as expected."
         # Create the rc file
-        touch "${_rc}"
+        if ! touch "${_rc}"; then
+            print_err "Error: Failed to create ${_rc}."
+            exit 1
+        fi
         # Append the sourcing block to the newly created rc file
         println "${UPDATE_SOURCE_STR}" >>"${_rc}"
     fi
@@ -109,9 +112,21 @@ update_rc() {
 # Main Script
 ###################################################################################################
 
+# Check for required commands
+for cmd in awk cat chmod curl mkdir touch uname; do
+    if ! command -v "${cmd}" >/dev/null 2>&1; then
+        print_err "Error: Required command '%s' not found in PATH.\n" "${cmd}"
+        exit 1
+    fi
+done
+
+if [ "$(id -u)" -eq 0 ]; then
+    print_err "Warning: Running as root is not recommended."
+fi
+
 OS=$(uname)
 
-case ${OS} in
+case "${OS}" in
 Darwin)
     ADJUSTED_ID="darwin"
     ;;
