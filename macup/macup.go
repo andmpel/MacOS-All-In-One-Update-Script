@@ -1,8 +1,7 @@
 package macup
 
 import (
-	"io"
-	"sync"
+	"fmt"
 
 	"github.com/AlecAivazis/survey/v2"
 )
@@ -11,7 +10,7 @@ import (
 type Update struct {
 	Name        string
 	Description string
-	Run         func(writer io.Writer)
+	Run         func()
 }
 
 // Config represents the user's selections.
@@ -30,21 +29,18 @@ var Updates = []Update{
 	{"macos", "Update macOS system", UpdateMacOS},
 }
 
-// Run runs the selected update functions.
-func Run(writer io.Writer, selectedUpdates []string) {
-	var wg sync.WaitGroup
+func Run(selectedUpdates []string) {
 	for _, updateName := range selectedUpdates {
 		for _, u := range Updates {
 			if u.Name == updateName {
-				wg.Add(1)
 				go func(u Update) {
-					defer wg.Done()
-					u.Run(writer)
+					fmt.Printf("Starting: %s\n", u.Description)
+					u.Run()
+					fmt.Printf("Finished: %s\n", u.Description)
 				}(u)
 			}
 		}
 	}
-	wg.Wait()
 }
 
 // SelectUpdates prompts the user to select which updates to run.

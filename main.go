@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"macup/macup"
 	"os"
-	"sync"
 )
 
 // Entry point of the update script
@@ -37,25 +36,17 @@ func main() {
 	}
 
 	// Run the selected updates
-	var wg sync.WaitGroup
 	buffers := make(map[string]*bytes.Buffer)
 	for _, updateName := range selectedUpdates {
 		buffers[updateName] = &bytes.Buffer{}
 	}
-
 	for _, updateName := range selectedUpdates {
 		for _, u := range macup.Updates {
 			if u.Name == updateName {
-				wg.Add(1)
-				go func(u macup.Update) {
-					defer wg.Done()
-					u.Run(buffers[u.Name])
-				}(u)
+				u.Run()
 			}
 		}
 	}
-
-	wg.Wait()
 
 	// Print the output of each update function
 	for _, updateName := range selectedUpdates {
