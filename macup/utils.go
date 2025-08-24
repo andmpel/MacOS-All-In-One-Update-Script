@@ -3,7 +3,6 @@ package macup
 import (
 	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
 	"os"
 	"os/exec"
@@ -25,32 +24,32 @@ const (
 )
 
 // printlnGreen prints a message in green color with a newline.
-func printlnGreen(writer io.Writer, msg string) {
-	fmt.Fprintf(writer, "\n%s%s%s\n", k_green, msg, k_clear)
+func printlnGreen(msg string) {
+	fmt.Fprintf(os.Stdout, "\n%s%s%s\n", k_green, msg, k_clear)
 }
 
 // printlnRed prints a message in red color (no newline).
-func printlnRed(writer io.Writer, msg string) {
-	fmt.Fprintf(writer, "%s%s%s", k_red, msg, k_clear)
+func printlnRed(msg string) {
+	fmt.Fprintf(os.Stdout, "%s%s%s", k_red, msg, k_clear)
 }
 
 // printlnYellow prints a message in yellow color (no newline).
-func printlnYellow(writer io.Writer, msg string) {
-	fmt.Fprintf(writer, "%s%s%s", k_yellow, msg, k_clear)
+func printlnYellow(msg string) {
+	fmt.Fprintf(os.Stdout, "%s%s%s", k_yellow, msg, k_clear)
 }
 
 // checkCommand checks if a command exists in `PATH`, print warning if not.
-func checkCommand(writer io.Writer, cmd string) bool {
+func checkCommand(cmd string) bool {
 	_, err := exec.LookPath(cmd)
 	if err != nil {
-		printlnYellow(writer, cmd+" is not installed.")
+		printlnYellow(cmd + " is not installed.")
 		return false
 	}
 	return true
 }
 
-// runCommand runs a shell command and directs its output to writer.
-func runCommand(writer io.Writer, name string, args ...string) {
+// runCommand runs a shell command and directs its output to .
+func runCommand(name string, args ...string) {
 	// Allow only specific commands
 	allowedCommands := map[string]bool{
 		"brew":           true,
@@ -64,22 +63,22 @@ func runCommand(writer io.Writer, name string, args ...string) {
 	}
 
 	if !allowedCommands[name] {
-		printlnRed(writer, "Command not allowed: "+name)
+		printlnRed("Command not allowed: " + name)
 		return
 	}
 	// Optionally validate arguments (e.g., no special characters)
 	for _, arg := range args {
 		if strings.ContainsAny(arg, "&|;$><") {
-			printlnRed(writer, "Invalid Argument: "+arg)
+			printlnRed("Invalid Argument: " + arg)
 			return
 		}
 	}
 
 	cmd := exec.Command(name, args...)
-	cmd.Stdout = writer
-	cmd.Stderr = writer
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
 	if err := cmd.Run(); err != nil {
-		printlnRed(writer, "Error running command: "+err.Error())
+
 	}
 }
 
@@ -91,7 +90,7 @@ func CheckInternet() bool {
 
 	resp, err := client.Get(k_testURL)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "\n%s%s%s\n", k_red, "⚠️ No Internet Connection!!!", k_clear)
+		printlnRed("⚠️ No Internet Connection!!!")
 		return false
 	}
 	defer resp.Body.Close()
