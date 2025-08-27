@@ -23,7 +23,7 @@ Then Run `update` from the terminal and it will run the script
 
 ### Manually Downloading and Running Script
 
-For easy access, save the `update-all.sh` script to your Mac user's home folder, make it executable, and then run it.
+For easy access, save the `update-all.sh` script to your Mac user's home folder, make it executable, and then run it
 
 ```sh
 USER_SCRIPTS="${HOME}/"
@@ -31,7 +31,12 @@ curl -fsSLo "$USER_SCRIPTS/update" https://raw.githubusercontent.com/andmpel/Mac
 chmod +x "$USER_SCRIPTS/update"
 ```
 
-**Now you can run the script anytime by simply typing `./update` from your home directory in your terminal.**
+Optional:
+
+Add an alias command to the udpate script in your .zshrc file
+Feel free to edit, or `#`comment out commands from the `update_all()` function of the script to skip them
+
+Now you can run the script anytime by simply typing `./update` from your home directory in your terminal
 
 ## Supported Updates
 
