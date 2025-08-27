@@ -39,7 +39,6 @@ Add an alias command to the update script in your .zshrc file
 
 Feel free to edit, or `#`comment out commands from the `update_all()` function of the script to skip them
 
-
 ## Supported Updates
 
 This script currently updates the following:
