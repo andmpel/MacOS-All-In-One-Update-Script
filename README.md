@@ -14,8 +14,13 @@ This Go script simplifies the process of updating all your macOS software direct
 ## Getting Started
 
 1. Head to releases and download `macup` or `macup_<cpu-arch>` for your mac
-2. Run the `./macup` from terminal, then select your updates
-3. To skip the selection menu, run `macup --yes` to use your previous selections
+2. `cd <path/to/macup>`
+3. `chmod +x ./macup`
+4. Run the `./macup` from terminal
+5. Go to System Settings Application and search `"gatekeeper"` and select the result
+6. Click `"Allow Anyway"`
+7. Run the `./macup` from terminal, then select your updates
+8. To skip the selection menu, run `macup --yes` to use your previous selections
 
 ## Supported Updates
 
