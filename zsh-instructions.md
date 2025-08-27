@@ -1,4 +1,4 @@
-# Instructions for Zsh/Bash script
+## Instructions for Zsh/Bash script
 
 ### Install Script as Alias for Repeat Use
 
