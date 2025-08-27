@@ -19,6 +19,8 @@ To Download & Execute, Run the following command in your terminal:
 curl -fsSL https://raw.githubusercontent.com/andmpel/MacOS-All-In-One-Update-Script/HEAD/install.sh | zsh
 ```
 
+Then Run `update` from the terminal and it will run the script
+
 ### Manually Downloading and Running Script
 
 For easy access, save the `update-all.sh` script to your Mac user's home folder, make it executable, and then run it.
