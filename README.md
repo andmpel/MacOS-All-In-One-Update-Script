@@ -7,29 +7,15 @@
 > Inspired by the article
 [Keeping MacOS Clean](https://waxzce.medium.com/keeping-macos-clean-this-is-my-osx-brew-update-cli-command-6c8f12dc1731).
 
-This Zsh script simplifies the process of updating all your macOS software directly from the Terminal. While it covers many updates, you may want to install [`mas`](https://github.com/mas-cli/mas) to manage App Store applications.
+🔔 This script has recently been ported from Zsh/Bash to Go. If you prefer the old script [here are the instructions](https://github.com/andmpel/MacOS-All-In-One-Update-Script/blob/ReadMe-Revise/zsh-instructions.md)
+
+This Go script simplifies the process of updating all your macOS software directly from the Terminal. While it covers many updates, you may want to install [`mas`](https://github.com/mas-cli/mas) to manage App Store applications.
 
 ## Getting Started
 
-### Install Script as Alias for Repeat Use
-
-To Download & Execute, Run the following command in your terminal:
-
-```sh
-curl -fsSL https://raw.githubusercontent.com/andmpel/MacOS-All-In-One-Update-Script/HEAD/install.sh | zsh
-```
-
-### Manually Downloading and Running Script
-
-For easy access, save the `update-all.sh` script to your Mac user's home folder, make it executable, and then run it.
-
-```sh
-USER_SCRIPTS="${HOME}/"
-curl -fsSLo "$USER_SCRIPTS/update" https://raw.githubusercontent.com/andmpel/MacOS-All-In-One-Update-Script/HEAD/update-all.sh
-chmod +x "$USER_SCRIPTS/update"
-```
-
-**Now you can run the script anytime by simply typing `./update` from your home directory in your terminal.**
+1. Head to releases and download `macup` or `macup_<cpu-arch>` for your mac
+2. Run the `./macup` from terminal, then select your updates
+3. To skip the selection menu, run `macup --yes` to use your previous selections
 
 ## Supported Updates
 
