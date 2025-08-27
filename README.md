@@ -31,13 +31,14 @@ curl -fsSLo "$USER_SCRIPTS/update" https://raw.githubusercontent.com/andmpel/Mac
 chmod +x "$USER_SCRIPTS/update"
 ```
 
-Optional:
+Now you can run the script anytime by simply typing `./update` from your home directory in your terminal
+
+***Optional:***
 
 Add an alias command to the update script in your .zshrc file
 
 Feel free to edit, or `#`comment out commands from the `update_all()` function of the script to skip them
 
-Now you can run the script anytime by simply typing `./update` from your home directory in your terminal
 
 ## Supported Updates
 
