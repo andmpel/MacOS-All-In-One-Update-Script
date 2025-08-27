@@ -4,19 +4,18 @@ package macup
 
 import (
 	"bytes"
-	"io"
 	"testing"
 )
 
 // Helper to capture output
-func captureOutput(f func(io.Writer)) string {
+func captureOutput(f func(io.)) string {
 	buf := &bytes.Buffer{}
 	f(buf)
 	return buf.String()
 }
 
 func TestPrintlnGreen(t *testing.T) {
-	out := captureOutput(func(w io.Writer) { printlnGreen(w, "Hello") })
+	out := captureOutput(func(w io.) { printlnGreen(w, "Hello") })
 	if !bytes.Contains([]byte(out), []byte("Hello")) {
 		t.Errorf("Expected output to contain 'Hello', got: %s", out)
 	}
