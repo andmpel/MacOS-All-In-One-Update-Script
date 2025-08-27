@@ -26,9 +26,9 @@ Then Run `update` from the terminal and it will run the script
 For easy access, save the `update-all.sh` script to your Mac user's home folder, make it executable, and then run it
 
 ```sh
-USER_SCRIPTS="${HOME}/update"
-curl -fsSLo "${USER_SCRIPTS}" https://raw.githubusercontent.com/andmpel/MacOS-All-In-One-Update-Script/HEAD/update-all.sh
-chmod +x "${USER_SCRIPTS}"
+UPDATE_SCRIPT="${HOME}/update"
+curl -fsSLo "${UPDATE_SCRIPT}" https://raw.githubusercontent.com/andmpel/MacOS-All-In-One-Update-Script/HEAD/update-all.sh
+chmod +x "${UPDATE_SCRIPT}"
 ```
 
 Now you can run the script anytime by simply typing `./update` from your home directory in your terminal
