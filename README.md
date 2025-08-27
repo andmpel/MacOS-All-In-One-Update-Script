@@ -33,7 +33,7 @@ chmod +x "$USER_SCRIPTS/update"
 
 Optional:
 
-Add an alias command to the udpate script in your .zshrc file
+Add an alias command to the update script in your .zshrc file
 Feel free to edit, or `#`comment out commands from the `update_all()` function of the script to skip them
 
 Now you can run the script anytime by simply typing `./update` from your home directory in your terminal
