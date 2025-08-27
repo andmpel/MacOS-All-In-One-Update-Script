@@ -1,17 +1,15 @@
 name: Test
-on:
-  pull_request:
-    branches: ["*"]
-  push:
-    branches:
-      - master
+on: pull_request
+permissions:
+  pull-requests: read
+  contents: read
 jobs:
   test:
     name: Test Update Script
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-13, macos-latest]
+        os: [macos-13, macos-14, macos-15, macos-latest]
     steps:
       - name: Checkout Code
         uses: actions/checkout@v5

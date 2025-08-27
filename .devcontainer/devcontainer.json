@@ -33,7 +33,7 @@
       }
     }
   },
-  "image": "mcr.microsoft.com/devcontainers/go:latest",
+  "image": "mcr.microsoft.com/devcontainers/base:noble",
   "runArgs": [
     "--rm",
     "--name=vsc-${localEnv:USER}-${containerWorkspaceFolderBasename}-${devcontainerId}"
