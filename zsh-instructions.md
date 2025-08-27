@@ -1,6 +1,6 @@
-## Instructions for Zsh/Bash script
+# Instructions for Zsh/Bash script
 
-### Install Script as Alias for Repeat Use
+## Install Script as Alias for Repeat Use
 
 To Download & Execute, Run the following command in your terminal:
 
@@ -8,7 +8,7 @@ To Download & Execute, Run the following command in your terminal:
 curl -fsSL https://raw.githubusercontent.com/andmpel/MacOS-All-In-One-Update-Script/HEAD/install.sh | zsh
 ```
 
-### Manually Downloading and Running Script
+## Manually Downloading and Running Script
 
 For easy access, save the `update-all.sh` script to your Mac user's home folder, make it executable, and then run it.
 
