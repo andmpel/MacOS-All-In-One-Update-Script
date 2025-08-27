@@ -1,4 +1,4 @@
-# All-In-One Mac Update Script 🍎🖥️
+# All-In-One macOS Update Script 🍎🖥️
 
 [![Dependabot Updates](https://github.com/andmpel/MacOS-All-In-One-Update-Script/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/andmpel/MacOS-All-In-One-Update-Script/actions/workflows/dependabot/dependabot-updates)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/andmpel/MacOS-All-In-One-Update-Script/master.svg)](https://results.pre-commit.ci/latest/github/andmpel/MacOS-All-In-One-Update-Script/master)
